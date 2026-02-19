@@ -1,18 +1,8 @@
 import Sequelize from "sequelize";
 import mysql2 from "mysql2";
 // Models
-import _QueryExecution from "./models/_query_executions";
-import Business from "./models/user/business";
-import Plan from "./models/user/plan";
+
 import User from "./models/user/user";
-import Bill from "./models/bill/bill";
-import BillDetail from "./models/bill/bill-detail";
-import Feedback from "./models/general/feedback";
-import Key from "./models/general/keys";
-import PaymentMethod from "./models/user/payment-method";
-import Workspace from "./models/general/workspace";
-import Country from "./models/general/country";
-import PotentialBusiness from "./models/user/potential-business";
 
 type CacheOptions = {
   revalidationTime?: number;
@@ -62,44 +52,15 @@ export default class DB {
       benchmark: true,
       logging: (str: string, time: number) => {
         if (time > 1500) {
-          this._QueryExecution
-            .create({
-              sql: str,
-              ms: time,
-              type: "alert_register",
-              logging: console.log,
-            })
-            .catch((err: any) => {
-              console.log(err);
-            });
-        } else {
-          // console.log(str);
+          console.log(time, str);
         }
       },
     },
   );
   public Sequelize = Sequelize;
   public models: { [key: string]: ModelInterface } = {};
-  public _QueryExecution = this.instanceModel(
-    "_QueryExecution",
-    _QueryExecution,
-  );
 
-  public Business = this.instanceModel("Business", Business);
   public User = this.instanceModel("User", User);
-  public Feedback = this.instanceModel("Feedback", Feedback);
-  public Bill = this.instanceModel("Bill", Bill);
-  public BillDetail = this.instanceModel("BillDetail", BillDetail);
-  public Key = this.instanceModel("Key", Key);
-  public PaymentMethod = this.instanceModel("PaymentMethod", PaymentMethod);
-  public Workspace = this.instanceModel("Workspace", Workspace);
-  public Plan = this.instanceModel("Plan", Plan);
-  public Country = this.instanceModel("Country", Country);
-
-  public PotentialBusiness = this.instanceModel(
-    "PotentialBusiness",
-    PotentialBusiness,
-  );
 
   constructor() {
     this.cache = {};
