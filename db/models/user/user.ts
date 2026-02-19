@@ -30,7 +30,9 @@ export default (sequelize: any, DataTypes: any) => {
   );
 
   User.associate = function (models: any) {
-    // models.User.belongsTo(models.Rol);
+    User.belongsTo(models.Role, { foreignKey: "roleId" });
+    User.belongsTo(models.Area, { foreignKey: "areaId" });
+    User.hasMany(models.OnboardingProcess, { as: "ManagedProcesses", foreignKey: "managerId" });
   };
 
   /**

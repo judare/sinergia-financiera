@@ -12,6 +12,8 @@ export { Button, Input, File, Select, Textarea, Loader, NoItems, Checkbox };
 export { IconTools } from "./IconTools";
 export { default as Modal } from "./Modal/Index";
 
+import Modal from "./Modal/Index";
+
 const DS = {
   Button,
   Input,
@@ -21,6 +23,7 @@ const DS = {
   Checkbox,
   Loader,
   NoItems,
+  Modal,
 };
 
 export default DS;
