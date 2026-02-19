@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - aws-sdk
+  - cpu-features
+  - sharp
+  - ssh2
+  - puppeteer
+minimumReleaseAge: 1440
