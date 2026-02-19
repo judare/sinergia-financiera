@@ -7,13 +7,10 @@ export default (sequelize: any, DataTypes: any) => {
     "User",
     {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-      name: { type: DataTypes.STRING, allowNull: true },
-      image: { type: DataTypes.STRING, allowNull: true },
+      fullName: { type: DataTypes.STRING, allowNull: true },
       email: { type: DataTypes.STRING, allowNull: true },
-      cellphone: { type: DataTypes.STRING, allowNull: true },
-      rol: { type: DataTypes.STRING, allowNull: true },
-      businessId: { type: DataTypes.INTEGER, allowNull: true },
-      currentViewId: { type: DataTypes.STRING, allowNull: true },
+      roleId: { type: DataTypes.INTEGER, allowNull: true },
+      areaId: { type: DataTypes.INTEGER, allowNull: true },
       password: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -25,39 +22,15 @@ export default (sequelize: any, DataTypes: any) => {
           }
         },
       },
-      blockedAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      lastActionAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      mfa: {
-        type: DataTypes.TEXT,
-        get() {
-          let objThis: any = this;
-          const json = objThis.getDataValue("mfa");
-          return JSON.parse(json || "{}");
-        },
-        set(value: any) {
-          let objThis: any = this;
-          objThis.setDataValue("mfa", JSON.stringify(value));
-        },
-      },
-      extra1: { type: DataTypes.STRING, allowNull: true },
-      extra2: { type: DataTypes.STRING, allowNull: true },
-      extra3: { type: DataTypes.STRING, allowNull: true },
-      emailVerified: { type: DataTypes.BOOLEAN, allowNull: true },
     },
     {
       paranoid: true,
       tableName: "users",
-    }
+    },
   );
 
   User.associate = function (models: any) {
-    models.User.belongsTo(models.Business);
+    // models.User.belongsTo(models.Rol);
   };
 
   /**
@@ -65,9 +38,6 @@ export default (sequelize: any, DataTypes: any) => {
    *@return new token
    */
   User.prototype.getCookieSession = async function () {
-    const business = await this.getBusiness();
-
-    const plan = await business.getPlan();
     let userMapped = {
       id: this.id,
       businessId: this.businessId,
@@ -80,41 +50,15 @@ export default (sequelize: any, DataTypes: any) => {
       extra3: this.extra3,
     };
 
-    let businessMapped = {
-      id: business.id,
-      name: business.name,
-      billEmail: business.billEmail,
-      logo: business.logo,
-      countryId: business.countryId,
-      website: business.website,
-      addedCard: !!business.paymentProviderToken,
-      limitViews: !business.paymentProviderToken ? 5 : null,
-      limitUsers: !business.paymentProviderToken ? 2 : null,
-    };
-
-    let planMapped = {
-      id: plan.id,
-      label: plan.label,
-      includedMinutes: plan.includedMinutes,
-      price: plan.price,
-      priceExtraMinute: plan.priceExtraMinute,
-      limitDatasources: plan.limitDatasources,
-      limitCustomers: plan.limitCustomers,
-      retentionDays: plan.retentionDays,
-    };
-
     return {
       user: userMapped,
-      business: businessMapped,
-      plan: planMapped,
     };
   };
 
   User.getCookieSessionOptions = function () {
     return {
       domain:
-        // process.env.NODE_ENV == "production" ? ".talkia.co" : ".talkia.lol",
-        process.env.NODE_ENV == "production" ? ".talkia.co" : ".localhost",
+        process.env.NODE_ENV == "production" ? ".sinergia.co" : ".localhost",
       sameSite: "lax",
       path: "/",
       secure: process.env.NODE_ENV == "production",
@@ -228,7 +172,7 @@ export default (sequelize: any, DataTypes: any) => {
           where: {
             id,
           },
-        }
+        },
       );
 
       delete toExecute[id];
