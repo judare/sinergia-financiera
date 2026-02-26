@@ -5,6 +5,7 @@ import mysql2 from "mysql2";
 import User from "./models/user/user";
 import Area from "./models/area/area";
 import Role from "./models/role/role";
+import Course from "./models/onboardingProcess/course";
 import OnboardingProcess from "./models/onboardingProcess/onboardingProcess";
 import AreaRequest from "./models/areaRequest/areaRequest";
 import AssetsDelivery from "./models/assetsDelivery/assetsDelivery";
@@ -72,12 +73,22 @@ export default class DB {
   public User = this.instanceModel("User", User);
   public Area = this.instanceModel("Area", Area);
   public Role = this.instanceModel("Role", Role);
-  public OnboardingProcess = this.instanceModel("OnboardingProcess", OnboardingProcess);
+  public Course = this.instanceModel("Course", Course);
+  public OnboardingProcess = this.instanceModel(
+    "OnboardingProcess",
+    OnboardingProcess,
+  );
   public AreaRequest = this.instanceModel("AreaRequest", AreaRequest);
   public AssetsDelivery = this.instanceModel("AssetsDelivery", AssetsDelivery);
-  public TechnicalRequirement = this.instanceModel("TechnicalRequirement", TechnicalRequirement);
+  public TechnicalRequirement = this.instanceModel(
+    "TechnicalRequirement",
+    TechnicalRequirement,
+  );
   public TrainingPlan = this.instanceModel("TrainingPlan", TrainingPlan);
-  public PositionTemplate = this.instanceModel("PositionTemplate", PositionTemplate);
+  public PositionTemplate = this.instanceModel(
+    "PositionTemplate",
+    PositionTemplate,
+  );
   public Workstation = this.instanceModel("Workstation", Workstation);
 
   constructor() {
