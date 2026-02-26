@@ -10,7 +10,7 @@ export default function Header() {
   const Menu = [
     {
       name: "Procesos",
-      href: "/dashboard/onboarding",
+      href: "/dashboard/",
     },
     {
       name: "Gestión de usuarios",
@@ -19,9 +19,9 @@ export default function Header() {
   ];
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-[#2d4b68] border-b border-neutral-200 text-white">
-      <div className="flex items-center gap-2">
+      <a className="flex items-center gap-2" href="/dashboard">
         <span className="text-lg font-semibold text-white">Sinergia</span>
-      </div>
+      </a>
       <ul className="flex text-white gap-3 items-center">
         {Menu.map((item) => (
           <li key={item.name}>

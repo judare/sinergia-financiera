@@ -74,7 +74,27 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-neutral-50">
       <Header />
-      <main className="flex-1 px-20 py-6">{JSON.stringify(onboarding)}</main>
+
+      <div className="w-1/2 mx-auto flex flex-col gap-5 py-10">
+        <DS.Input label="Código" value={onboarding?.processCode} disabled />
+        <DS.Input label="Nombre" value={onboarding?.fullName} disabled />
+
+        <div>
+          <h2 className="text-xl font-semibold text-neutral-900">
+            Escoger lugar de trabajo
+          </h2>
+          <div
+            className="grid grid-cols-8 gap-3  px-10 py-10 items-center justify-center rounded-2xl"
+            style={{
+              backgroundImage: `url(/piso.jpg)`,
+            }}
+          >
+            {Array.from({ length: 72 }).map((row, i) => (
+              <div className="size-10 rounded-lg bg-sky-500 hover:bg-sky-800"></div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
