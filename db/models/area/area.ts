@@ -4,6 +4,7 @@ export default (sequelize: any, DataTypes: any) => {
     {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       name: { type: DataTypes.STRING(100), allowNull: false },
+      directorId: { type: DataTypes.INTEGER, allowNull: false },
     },
     {
       paranoid: true,
@@ -12,9 +13,7 @@ export default (sequelize: any, DataTypes: any) => {
   );
 
   Area.associate = function (models: any) {
-    Area.hasMany(models.User, { foreignKey: "areaId" });
-    Area.hasMany(models.OnboardingProcess, { foreignKey: "areaId" });
-    Area.hasMany(models.AreaRequest, { foreignKey: "areaId" });
+    Area.belongsTo(models.User, { foreignKey: "directorId" });
   };
 
   return Area;

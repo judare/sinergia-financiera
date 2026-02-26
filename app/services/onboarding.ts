@@ -9,3 +9,8 @@ export const createApi = async function (data: any) {
   let result = await postRequest("onboarding/create", data);
   return result.data;
 };
+
+export const fetchAreas = async function () {
+  let result = await postRequest("onboarding/areas", {});
+  return result.data.Areas;
+};

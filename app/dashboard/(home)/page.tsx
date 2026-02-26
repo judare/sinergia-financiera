@@ -3,7 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "@/app/hooks/useSession";
 import { useApi } from "@/app/hooks/useApi";
-import { fetchOnboardingList, createApi } from "@/app/services/onboarding";
+import {
+  fetchOnboardingList,
+  createApi,
+  fetchAreas,
+} from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
 
@@ -24,7 +28,9 @@ export default function Home() {
   const { data: session } = useSession();
   const { callApi, loading } = useApi(fetchOnboardingList);
   const { callApi: callApiCreate } = useApi(createApi);
+  const { callApi: callApiAreas } = useApi(fetchAreas);
   const [onboardingList, setOnboardingList] = useState<OnboardingProcess[]>([]);
+  const [areas, setAreas] = useState<any>([]);
   const createRef = useRef<any>(null);
 
   const [form, setForm] = useState<any>({});
@@ -32,8 +38,14 @@ export default function Home() {
   useEffect(() => {
     if (session) {
       loadOnboarding();
+      loadAreas();
     }
   }, [session]);
+
+  const loadAreas = async () => {
+    const data = await callApiAreas();
+    if (data) setAreas(data);
+  };
 
   const loadOnboarding = async () => {
     const data = await callApi();
@@ -177,6 +189,18 @@ export default function Home() {
             onChange={(startDate) => setForm({ ...form, startDate })}
             type="date"
           />
+
+          <DS.Select
+            label="Área"
+            value={form.areaId}
+            onChange={(areaId: any) => setForm({ ...form, areaId })}
+          >
+            {areas.map((area: any) => (
+              <option key={area.id} value={area.id}>
+                {area.name}
+              </option>
+            ))}
+          </DS.Select>
 
           <DS.Button
             onClick={handleSubmitCreate}
