@@ -53,6 +53,7 @@ export default (sequelize: any, DataTypes: any) => {
       extra1: this.extra1,
       extra2: this.extra2,
       extra3: this.extra3,
+      areaId: this.areaId,
     };
 
     return {

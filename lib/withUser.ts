@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/sessionServer";
 import jwt from "jsonwebtoken";
-import db from "@/db/conn";
-
-const { User } = db;
 
 export const withUser = (cb: any) => {
   return async function (req: NextRequest) {
@@ -22,11 +19,10 @@ export const withUser = (cb: any) => {
             message: "You must be loggin",
           },
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
-    User.markUsed(user.id);
     return await cb({ req, user: user, body });
   };
 };
@@ -40,7 +36,7 @@ export const withAdmin = (cb: any) => {
             message: "Incorrect rol",
           },
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 

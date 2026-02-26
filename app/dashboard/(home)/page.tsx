@@ -197,6 +197,7 @@ export default function Home() {
             value={form.areaId}
             onChange={(areaId: any) => setForm({ ...form, areaId })}
           >
+            {!form.areaId && <option value="">Seleccione</option>}
             {areas.map((area: any) => (
               <option key={area.id} value={area.id}>
                 {area.name}
@@ -209,6 +210,7 @@ export default function Home() {
             value={form.documentType}
             onChange={(documentType: any) => setForm({ ...form, documentType })}
           >
+            {!form.documentType && <option value="">Seleccione</option>}
             {["DNI", "PASAPORTE", "CEDULA"].map((docType: any) => (
               <option key={docType} value={docType}>
                 {docType}

@@ -20,11 +20,11 @@ export const POST = withUser(async function ({ user }: any) {
             attributes: ["id", "fullName", "email"],
           },
         ],
-        where: {
-          managerId: user.id,
-        },
       },
     ],
+    where: {
+      areaId: user.areaId,
+    },
     order: [["createdAt", "DESC"]],
   });
 
