@@ -127,7 +127,9 @@ export default function Home() {
                     className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50 transition-colors"
                   >
                     <td className="px-4 py-3 text-neutral-500 font-mono text-xs">
-                      {process.processCode}
+                      <a href={`/dashboard/onboarding/${process.id}`}>
+                        {process.processCode}
+                      </a>
                     </td>
                     <td className="px-4 py-3 font-medium text-neutral-900">
                       {process.fullName}
