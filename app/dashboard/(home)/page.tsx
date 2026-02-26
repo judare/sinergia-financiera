@@ -204,6 +204,30 @@ export default function Home() {
             ))}
           </DS.Select>
 
+          <DS.Select
+            label="Tipo de documento"
+            value={form.documentType}
+            onChange={(documentType: any) => setForm({ ...form, documentType })}
+          >
+            {["DNI", "PASAPORTE", "CEDULA"].map((docType: any) => (
+              <option key={docType} value={docType}>
+                {docType}
+              </option>
+            ))}
+          </DS.Select>
+
+          <DS.Input
+            label="Número de documento"
+            value={form.documentNumber}
+            onChange={(documentNumber) => setForm({ ...form, documentNumber })}
+          />
+
+          <DS.Input
+            label="Posición"
+            value={form.position}
+            onChange={(position) => setForm({ ...form, position })}
+          />
+
           <DS.Button
             onClick={handleSubmitCreate}
             text="Crear proceso"

@@ -14,9 +14,9 @@ export const POST = withUser(async function ({ user, body }: any) {
   let onboarding = await OnboardingProcess.create({
     processCode: data.processCode,
     fullName: data.fullName,
-    documentType: data.fullName,
-    documentNumber: data.fullName,
-    position: data.fullName,
+    documentType: data.documentType,
+    documentNumber: data.documentNumber,
+    position: data.position,
     areaId: 1,
     startDate: moment(data.startDate).toDate(),
     managerId: user.id,
