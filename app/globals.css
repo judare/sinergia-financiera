@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -121,7 +119,6 @@ body {
 }
 
 * {
-  font-family: "Google Sans", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
@@ -291,38 +288,6 @@ body {
   content: "";
 }
 
-.border-glow:before {
-  left: 0;
-  right: 0;
-  top: 0;
-  border-width: 1px;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
-  --tw-border-opacity: 0.8;
-  height: var(--radius);
-  border-bottom: none;
-  border-radius: var(--radius) var(--radius) 0 0;
-}
-
-.border-glow:after {
-  border-width: 1px;
-  --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
-  inset: var(--radius) 0 0 0;
-  border-top: none;
-  -o-border-image: linear-gradient(
-      180deg,
-      hsla(0, 0%, 100%, 0.8) 0,
-      transparent 40%
-    )
-    1;
-  border-image: linear-gradient(
-      180deg,
-      hsla(0, 0%, 100%, 0.8) 0,
-      transparent 40%
-    )
-    1;
-}
-
 .block-response.response-line {
   @apply justify-center items-center flex;
 }
@@ -332,7 +297,7 @@ body {
 }
 
 .login-button {
-  @apply transition duration-100 rounded-full flex gap-3 items-center text-neutral-600 px-3 py-2 font-light hover:bg-neutral-300 cursor-pointer border text-center justify-center bg-white border-neutral-300;
+  @apply transition duration-100 rounded-full flex gap-3 items-center text-neutral-800 px-3 py-2 font-light hover:bg-neutral-300 cursor-pointer border-2 text-center justify-center bg-white border-neutral-300;
 }
 .blokay-box {
   @apply relative w-full h-full flex items-center justify-center bg-white rounded-xl flex-col flex-1;
@@ -632,10 +597,10 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Design System */
 
 .btn {
-  @apply appearance-none border  inline-block font-light focus:outline-none border-solid rounded-full;
+  @apply appearance-none border font-semibold inline-block focus:outline-none border-solid rounded-full;
 }
 .btn-primary {
-  @apply border-black bg-black text-white  hover:bg-neutral-800;
+  @apply border-transparent bg-black text-white  hover:bg-neutral-800;
 }
 .btn-secondary {
   @apply text-neutral-600 border-transparent  bg-transparent dark:text-neutral-300 dark:hover:bg-neutral-900 hover:bg-neutral-100;
@@ -653,7 +618,7 @@ input[type="number"]::-webkit-outer-spin-button {
   @apply py-3 px-5 text-sm h-12;
 }
 .size-md {
-  @apply py-1.5 px-3 text-sm h-10;
+  @apply py-1.5 px-5 text-sm h-10;
 }
 .size-sm {
   @apply py-1.5 px-2 text-xs md:text-xs h-8;

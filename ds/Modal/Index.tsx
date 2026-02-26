@@ -8,7 +8,6 @@ import React, {
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronDown } from "lucide-react";
-import "./styles.css";
 import { cn } from "@/lib/utils";
 
 type ModalProps = {
@@ -153,11 +152,11 @@ const Modal = function (props: ModalProps, ref: any): any {
                   exit={{ opacity: 0, y: -50 }}
                   transition={{ duration: 0.1 }}
                   className={cn(
-                    "dark:text-neutral-200  text-black  rounded-lg border border-white/10 ",
+                    "dark:text-neutral-200  text-black  rounded-3xl border border-white/10 ",
                     sizeClass(),
                     size,
                     classSection,
-                    bgColor == "white" ? "bg-white dark:bg-[#121316]" : ""
+                    bgColor == "white" ? "bg-white dark:bg-[#121316]" : "",
                   )}
                   style={{
                     backgroundColor: bgColor != "white" ? bgColor : "",
@@ -209,7 +208,7 @@ const Modal = function (props: ModalProps, ref: any): any {
                     className={cn(
                       "py-5 px-4 overflow-y-auto scrollable-div ",
                       error ? "with-error" : "",
-                      classBody
+                      classBody,
                     )}
                     style={{
                       maxHeight: `calc(100vh - ${
@@ -232,7 +231,7 @@ const Modal = function (props: ModalProps, ref: any): any {
             )}
           </AnimatePresence>
         </div>,
-        container
+        container,
       )
     : null;
 };

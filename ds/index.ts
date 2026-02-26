@@ -6,13 +6,12 @@ import Textarea from "./Form/Textarea";
 import Checkbox from "./Form/Checkbox";
 import Loader from "./Loader/Index";
 import NoItems from "./NoItems";
+import Modal from "./Modal/Index";
 
 export { Button, Input, File, Select, Textarea, Loader, NoItems, Checkbox };
 
 export { IconTools } from "./IconTools";
 export { default as Modal } from "./Modal/Index";
-
-import Modal from "./Modal/Index";
 
 const DS = {
   Button,

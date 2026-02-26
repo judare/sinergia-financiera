@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "@/app/hooks/useSession";
 import { useApi } from "@/app/hooks/useApi";
-import { fetchOnboardingList } from "@/app/services/onboarding";
+import { fetchOnboardingList, createApi } from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
-import { Loader, NoItems } from "@/ds";
+import DS, { Loader } from "@/ds";
 
 type OnboardingProcess = {
   id: number;
@@ -23,7 +23,11 @@ type OnboardingProcess = {
 export default function Home() {
   const { data: session } = useSession();
   const { callApi, loading } = useApi(fetchOnboardingList);
+  const { callApi: callApiCreate } = useApi(createApi);
   const [onboardingList, setOnboardingList] = useState<OnboardingProcess[]>([]);
+  const createRef = useRef<any>(null);
+
+  const [form, setForm] = useState<any>({});
 
   useEffect(() => {
     if (session) {
@@ -34,6 +38,17 @@ export default function Home() {
   const loadOnboarding = async () => {
     const data = await callApi();
     if (data) setOnboardingList(data);
+  };
+
+  const handleCreate = function () {
+    createRef.current?.showModal();
+  };
+
+  const handleSubmitCreate = function () {
+    callApiCreate(form).then(() => {
+      createRef.current?.hideModal();
+      loadOnboarding();
+    });
   };
 
   if (!session) {
@@ -48,21 +63,27 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-neutral-50">
       <Header />
       <main className="flex-1 px-6 py-6">
-        <div className="mb-5">
-          <h2 className="text-xl font-semibold text-neutral-900">
-            Procesos de Onboarding
-          </h2>
-          <p className="text-sm text-neutral-500 mt-1">
-            Lista de procesos registrados
-          </p>
+        <div className="mb-5 flex justify-between items-center">
+          <div>
+            <h2 className="text-xl font-semibold text-neutral-900">
+              Procesos de Onboardingasdasd
+            </h2>
+            <p className="text-sm text-neutral-500 mt-1">
+              Lista de procesos registrados
+            </p>
+          </div>
+          <DS.Button
+            variant="primary"
+            size="lg"
+            onClick={handleCreate}
+            text="Crear proceso"
+          />
         </div>
 
         {loading ? (
           <div className="flex justify-center py-16">
             <Loader />
           </div>
-        ) : onboardingList.length === 0 ? (
-          <NoItems />
         ) : (
           <div className="bg-white border border-neutral-200 rounded-2xl overflow-hidden">
             <table className="w-full text-sm">
@@ -135,6 +156,40 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      <DS.Modal
+        title="Crear Proceso"
+        ref={createRef}
+        size="sm"
+        position="center"
+      >
+        <div className="flex flex-col gap-3">
+          <DS.Input
+            label="Código"
+            value={form.processCode}
+            onChange={(processCode) => setForm({ ...form, processCode })}
+          />
+          <DS.Input
+            label="Nombre"
+            value={form.fullName}
+            onChange={(fullName) => setForm({ ...form, fullName })}
+          />
+
+          <DS.Input
+            label="Fecha de inicio"
+            value={form.startDate}
+            onChange={(startDate) => setForm({ ...form, startDate })}
+            type="date"
+          />
+
+          <DS.Button
+            onClick={handleSubmitCreate}
+            text="Crear proceso"
+            variant="primary"
+            size="lg"
+          />
+        </div>
+      </DS.Modal>
     </div>
   );
 }
