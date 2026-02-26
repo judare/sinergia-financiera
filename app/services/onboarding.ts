@@ -19,3 +19,8 @@ export const fetchAreas = async function () {
   let result = await postRequest("onboarding/areas", {});
   return result.data.Areas;
 };
+
+export const fetchCourses = async function () {
+  let result = await postRequest("onboarding/courses", {});
+  return result.data.Courses;
+};

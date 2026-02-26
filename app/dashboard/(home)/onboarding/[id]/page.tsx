@@ -10,6 +10,7 @@ import {
 } from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
+import SelectCourse from "./components/SelectCourse";
 
 type OnboardingProcess = {
   id: number;
@@ -79,6 +80,11 @@ export default function Home() {
         <DS.Input label="Código" value={onboarding?.processCode} disabled />
         <DS.Input label="Nombre" value={onboarding?.fullName} disabled />
 
+        <SelectCourse
+          onChange={(checked: any) => {
+            setForm({ ...form, courseIds: checked });
+          }}
+        />
         <div>
           <h2 className="text-xl font-semibold text-neutral-900">
             Escoger lugar de trabajo

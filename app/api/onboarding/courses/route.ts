@@ -12,6 +12,8 @@ export const POST = withUser(async function ({}: any) {
   const list = result.map((n: any) => ({
     id: n.id,
     name: n.name,
+    observation: n.observation,
+    mode: n.mode,
   }));
 
   return NextResponse.json({
