@@ -122,6 +122,15 @@ export default function Home() {
             ))}
           </div>
         </Section>
+
+        <Section>
+          <DS.Button
+            onClick={handleCreate}
+            text="Guardar "
+            variant="primary"
+            size="lg"
+          />
+        </Section>
       </div>
     </div>
   );
