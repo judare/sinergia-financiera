@@ -25,6 +25,15 @@ type OnboardingProcess = {
   status: string;
 };
 
+const Section = ({ children, title }: any) => {
+  return (
+    <div className="flex flex-col gap-3 py-10">
+      <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
+      {children}
+    </div>
+  );
+};
+
 export default function Home() {
   const { data: session } = useSession();
   const { callApi, loading } = useApi(fetchOnboarding);
@@ -76,19 +85,32 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-neutral-50">
       <Header />
 
-      <div className="w-1/2 mx-auto flex flex-col gap-5 py-10">
-        <DS.Input label="Código" value={onboarding?.processCode} disabled />
-        <DS.Input label="Nombre" value={onboarding?.fullName} disabled />
+      <div className="w-1/2 mx-auto flex flex-col divide-y divide-neutral-300 py-10">
+        <Section title="Información del proceso">
+          <DS.Input label="Código" value={onboarding?.processCode} disabled />
+          <DS.Input label="Nombre" value={onboarding?.fullName} disabled />
+          <DS.Input label="Posición" value={onboarding?.position} disabled />
 
-        <SelectCourse
-          onChange={(checked: any) => {
-            setForm({ ...form, courseIds: checked });
-          }}
-        />
-        <div>
-          <h2 className="text-xl font-semibold text-neutral-900">
-            Escoger lugar de trabajo
-          </h2>
+          <DS.Input
+            label="Tipo de documento"
+            value={onboarding?.documentType}
+            disabled
+          />
+          <DS.Input
+            label="Número de documento"
+            value={onboarding?.documentNumber}
+            disabled
+          />
+        </Section>
+
+        <Section title="Escoger cursos">
+          <SelectCourse
+            onChange={(checked: any) => {
+              setForm({ ...form, courseIds: checked });
+            }}
+          />
+        </Section>
+        <Section title="Escoger lugar de trabajo">
           <div
             className="grid grid-cols-8 gap-3  px-10 py-10 items-center justify-center rounded-2xl"
             style={{
@@ -99,7 +121,7 @@ export default function Home() {
               <div className="size-10 rounded-lg bg-sky-500 hover:bg-sky-800"></div>
             ))}
           </div>
-        </div>
+        </Section>
       </div>
     </div>
   );
