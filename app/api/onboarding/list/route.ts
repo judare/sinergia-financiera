@@ -3,31 +3,42 @@ import { NextResponse } from "next/server";
 import db from "@/db/conn";
 import moment from "moment";
 
-const { OnboardingProcess, Area, User } = db;
+const { OnboardingProcess, Area, User, AreaRequest } = db;
 
 export const POST = withUser(async function ({ user }: any) {
-  const result = await OnboardingProcess.findAll({
+  const requests = await AreaRequest.findAll({
     include: [
-      { model: Area },
-      { model: User, as: "Manager", attributes: ["id", "fullName", "email"] },
+      {
+        model: OnboardingProcess,
+        required: true,
+
+        include: [
+          { model: Area },
+          {
+            model: User,
+            as: "Manager",
+            attributes: ["id", "fullName", "email"],
+          },
+        ],
+        where: {
+          managerId: user.id,
+        },
+      },
     ],
-    where: {
-      managerId: user.id,
-    },
     order: [["createdAt", "DESC"]],
   });
 
-  const list = result.map((n: any) => ({
+  const list = requests.map((n: any) => ({
     id: n.id,
-    processCode: n.processCode,
-    fullName: n.fullName,
-    documentType: n.documentType,
-    documentNumber: n.documentNumber,
-    position: n.position,
-    area: n.Area?.name || null,
-    startDate: moment(n.startDate).format("DD/MM/YY"),
-    manager: n.Manager?.fullName || null,
-    status: n.status,
+    processCode: n.OnboardingProcess.processCode,
+    fullName: n.OnboardingProcess.fullName,
+    documentType: n.OnboardingProcess.documentType,
+    documentNumber: n.OnboardingProcess.documentNumber,
+    position: n.OnboardingProcess.position,
+    area: n.OnboardingProcess.Area?.name || null,
+    startDate: moment(n.OnboardingProcess.startDate).format("DD/MM/YY"),
+    manager: n.OnboardingProcess.Manager?.fullName || null,
+    status: n.OnboardingProcess.status,
   }));
 
   return NextResponse.json({
