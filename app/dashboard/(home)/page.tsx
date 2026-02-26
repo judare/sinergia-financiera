@@ -62,15 +62,11 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-neutral-50">
       <Header />
-      <main className="flex-1 px-6 py-6">
+      <main className="flex-1 px-20 py-6">
         <div className="mb-5 flex justify-between items-center">
           <div>
-            <h2 className="text-xl font-semibold text-neutral-900">
-              Procesos de Onboardingasdasd
-            </h2>
-            <p className="text-sm text-neutral-500 mt-1">
-              Lista de procesos registrados
-            </p>
+            <h2 className="text-xl font-semibold text-neutral-900">Procesos</h2>
+            <p className="text-sm text-neutral-500 mt-1">Lista de procesos</p>
           </div>
           <DS.Button
             variant="primary"

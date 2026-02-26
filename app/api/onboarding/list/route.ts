@@ -11,6 +11,9 @@ export const POST = withUser(async function ({ user }: any) {
       { model: Area },
       { model: User, as: "Manager", attributes: ["id", "fullName", "email"] },
     ],
+    where: {
+      managerId: user.id,
+    },
     order: [["createdAt", "DESC"]],
   });
 

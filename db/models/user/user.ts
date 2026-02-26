@@ -32,7 +32,10 @@ export default (sequelize: any, DataTypes: any) => {
   User.associate = function (models: any) {
     User.belongsTo(models.Role, { foreignKey: "roleId" });
     User.belongsTo(models.Area, { foreignKey: "areaId" });
-    User.hasMany(models.OnboardingProcess, { as: "ManagedProcesses", foreignKey: "managerId" });
+    User.hasMany(models.OnboardingProcess, {
+      as: "ManagedProcesses",
+      foreignKey: "managerId",
+    });
   };
 
   /**
@@ -43,7 +46,7 @@ export default (sequelize: any, DataTypes: any) => {
     let userMapped = {
       id: this.id,
       businessId: this.businessId,
-      name: this.name,
+      fullName: this.fullName,
       image: this.image,
       email: this.email,
       rol: this.rol,

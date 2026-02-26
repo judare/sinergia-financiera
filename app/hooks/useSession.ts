@@ -3,11 +3,10 @@ import { useContext } from "use-context-selector";
 import { fetchSignIn } from "@/app/services/auth";
 
 export function useSession() {
-  const { session, hasToPay }: any = useContext(Context);
+  const { session }: any = useContext(Context);
 
   return {
     data: session,
-    hasToPay,
   };
 }
 
