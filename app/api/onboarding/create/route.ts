@@ -17,7 +17,7 @@ export const POST = withUser(async function ({ user, body }: any) {
     documentType: data.documentType,
     documentNumber: data.documentNumber,
     position: data.position,
-    areaId: 1,
+    areaId: data.areaId,
     startDate: moment(data.startDate).toDate(),
     managerId: user.id,
     status: "Pendiente",

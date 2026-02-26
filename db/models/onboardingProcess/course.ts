@@ -4,6 +4,8 @@ export default (sequelize: any, DataTypes: any) => {
     {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       name: { type: DataTypes.STRING(100), allowNull: false },
+      observation: { type: DataTypes.STRING, allowNull: false },
+      mode: { type: DataTypes.ENUM("virtual", "presence"), allowNull: false },
     },
     {
       paranoid: true,
