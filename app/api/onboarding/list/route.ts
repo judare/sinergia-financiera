@@ -38,7 +38,7 @@ export const POST = withUser(async function ({ user }: any) {
     area: n.OnboardingProcess.Area?.name || null,
     startDate: moment(n.OnboardingProcess.startDate).format("DD/MM/YY"),
     manager: n.OnboardingProcess.Manager?.fullName || null,
-    status: n.OnboardingProcess.status,
+    status: n.status,
   }));
 
   return NextResponse.json({
