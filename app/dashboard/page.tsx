@@ -6,7 +6,7 @@ import { useApi } from "@/app/hooks/useApi";
 import {
   fetchOnboardingList,
   createApi,
-  fetchAreas,
+  fetchPositions,
 } from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
@@ -30,9 +30,9 @@ export default function Home() {
   const { data: session } = useSession();
   const { callApi, loading } = useApi(fetchOnboardingList);
   const { callApi: callApiCreate } = useApi(createApi);
-  const { callApi: callApiAreas } = useApi(fetchAreas);
+  const { callApi: callApiPositions } = useApi(fetchPositions);
   const [onboardingList, setOnboardingList] = useState<OnboardingProcess[]>([]);
-  const [areas, setAreas] = useState<any>([]);
+  const [positions, setPositions] = useState<any>([]);
   const [filters, setFilters] = useState<any>([]);
   const createRef = useRef<any>(null);
 
@@ -50,8 +50,8 @@ export default function Home() {
   }, [filters]);
 
   const loadAreas = async () => {
-    const data = await callApiAreas();
-    if (data) setAreas(data);
+    const data = await callApiPositions();
+    if (data) setPositions(data);
   };
 
   const loadOnboarding = async () => {
@@ -221,14 +221,14 @@ export default function Home() {
           />
 
           <DS.Select
-            label="Área"
-            value={form.areaId}
-            onChange={(areaId: any) => setForm({ ...form, areaId })}
+            label="Posición"
+            value={form.positionId}
+            onChange={(positionId: any) => setForm({ ...form, positionId })}
           >
-            {!form.areaId && <option value="">Seleccione</option>}
-            {areas.map((area: any) => (
-              <option key={area.id} value={area.id}>
-                {area.name}
+            {!form.positionId && <option value="">Seleccione</option>}
+            {positions.map((positionId: any) => (
+              <option key={positionId.id} value={positionId.id}>
+                {positionId.name}
               </option>
             ))}
           </DS.Select>
@@ -250,12 +250,6 @@ export default function Home() {
             label="Número de documento"
             value={form.documentNumber}
             onChange={(documentNumber) => setForm({ ...form, documentNumber })}
-          />
-
-          <DS.Input
-            label="Posición"
-            value={form.position}
-            onChange={(position) => setForm({ ...form, position })}
           />
 
           <DS.Button

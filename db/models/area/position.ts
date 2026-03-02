@@ -9,7 +9,6 @@ export default (sequelize: any, DataTypes: any) => {
       bossId: { type: DataTypes.INTEGER, allowNull: false },
     },
     {
-      paranoid: true,
       tableName: "positions",
     },
   );
