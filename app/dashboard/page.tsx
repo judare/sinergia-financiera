@@ -45,13 +45,17 @@ export default function Home() {
     }
   }, [session]);
 
+  useEffect(() => {
+    loadOnboarding();
+  }, [filters]);
+
   const loadAreas = async () => {
     const data = await callApiAreas();
     if (data) setAreas(data);
   };
 
   const loadOnboarding = async () => {
-    const data = await callApi();
+    const data = await callApi({ filters });
     if (data) setOnboardingList(data);
   };
 
@@ -75,11 +79,11 @@ export default function Home() {
       options: [
         {
           label: "Completado",
-          value: "Completado",
+          value: "successful",
         },
         {
           label: "En proceso",
-          value: "En proceso",
+          value: "pending",
         },
       ],
     },

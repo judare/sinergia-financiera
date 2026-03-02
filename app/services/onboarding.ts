@@ -1,7 +1,7 @@
 import { postRequest } from "./_base";
 
-export const fetchOnboardingList = async function () {
-  let result = await postRequest("onboarding/list", {});
+export const fetchOnboardingList = async function (data: any) {
+  let result = await postRequest("onboarding/list", { ...data });
   return result.data.OnboardingProcesses;
 };
 

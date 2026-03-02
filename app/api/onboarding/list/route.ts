@@ -5,8 +5,10 @@ import moment from "moment";
 
 const { OnboardingProcess, Area, User, AreaRequest } = db;
 
-export const POST = withUser(async function ({ user }: any) {
-  const requests = await AreaRequest.findAll({
+export const POST = withUser(async function ({ user, body }: any) {
+  let data = body.data;
+
+  const queryBuilder: any = {
     include: [
       {
         model: OnboardingProcess,
@@ -26,7 +28,15 @@ export const POST = withUser(async function ({ user }: any) {
       areaId: user.areaId,
     },
     order: [["createdAt", "DESC"]],
-  });
+  };
+
+  if (data.filters?.status) {
+    queryBuilder.where.status = data.filters.status;
+  } else {
+    queryBuilder.where.status = "pending";
+  }
+
+  const requests = await AreaRequest.findAll(queryBuilder);
 
   const list = requests.map((n: any) => ({
     id: n.id,

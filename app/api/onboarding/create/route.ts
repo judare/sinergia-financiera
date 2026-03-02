@@ -28,7 +28,7 @@ export const POST = withUser(async function ({ user, body }: any) {
     toInsertRequests.push({
       onboardingProcessId: onboarding.id,
       areaId: area.id,
-      status: "Pendiente",
+      status: "pending",
       deadline: moment().add(1, "month").format("YYYY-MM-DD"),
     });
   }
