@@ -16,6 +16,10 @@ export default function Header() {
       name: "Gestión de usuarios",
       href: "/dashboard/users",
     },
+    {
+      name: "Reportes",
+      href: "/dashboard/report",
+    },
   ];
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-[#2d4b68] border-b border-neutral-200 text-white">
