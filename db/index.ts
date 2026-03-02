@@ -4,6 +4,7 @@ import mysql2 from "mysql2";
 
 import User from "./models/user/user";
 import Area from "./models/area/area";
+import Position from "./models/area/position";
 import Role from "./models/role/role";
 import Course from "./models/onboardingProcess/course";
 import OnboardingProcess from "./models/onboardingProcess/onboardingProcess";
@@ -72,6 +73,7 @@ export default class DB {
 
   public User = this.instanceModel("User", User);
   public Area = this.instanceModel("Area", Area);
+  public Position = this.instanceModel("Position", Position);
   public Role = this.instanceModel("Role", Role);
   public Course = this.instanceModel("Course", Course);
   public OnboardingProcess = this.instanceModel(
