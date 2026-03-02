@@ -24,6 +24,7 @@ type OnboardingProcess = {
   startDate: string;
   manager: string | null;
   status: string;
+  Position: any;
 };
 
 export default function Home() {
@@ -163,7 +164,7 @@ export default function Home() {
                       {process.fullName}
                     </td>
                     <td className="px-4 py-3 text-neutral-600">
-                      {process.position}
+                      {process.Position?.name || "-"}
                     </td>
                     <td className="px-4 py-3 text-neutral-600">
                       {process.area || "-"}

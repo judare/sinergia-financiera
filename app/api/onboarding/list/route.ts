@@ -15,8 +15,8 @@ export const POST = withUser(async function ({ user, body }: any) {
         required: true,
 
         include: [
-          { model: Area },
           {
+            include: [{ model: Area }],
             model: Position,
             required: true,
           },
@@ -48,7 +48,7 @@ export const POST = withUser(async function ({ user, body }: any) {
     fullName: n.OnboardingProcess.fullName,
     documentType: n.OnboardingProcess.documentType,
     documentNumber: n.OnboardingProcess.documentNumber,
-    area: n.OnboardingProcess.Area?.name || null,
+    area: n.OnboardingProcess.Position.Area?.name || null,
     startDate: moment(n.OnboardingProcess.startDate).format("DD/MM/YY"),
     manager: n.OnboardingProcess.Manager?.fullName || null,
     status: n.status,
