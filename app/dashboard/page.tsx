@@ -10,6 +10,8 @@ import {
 } from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
+import Filters from "@/app/components/Filters";
+import { Info } from "lucide-react";
 
 type OnboardingProcess = {
   id: number;
@@ -31,6 +33,7 @@ export default function Home() {
   const { callApi: callApiAreas } = useApi(fetchAreas);
   const [onboardingList, setOnboardingList] = useState<OnboardingProcess[]>([]);
   const [areas, setAreas] = useState<any>([]);
+  const [filters, setFilters] = useState<any>([]);
   const createRef = useRef<any>(null);
 
   const [form, setForm] = useState<any>({});
@@ -63,6 +66,25 @@ export default function Home() {
     });
   };
 
+  const userFilters = [
+    {
+      type: "text",
+      label: "Estado",
+      icon: Info,
+      name: "status",
+      options: [
+        {
+          label: "Completado",
+          value: "Completado",
+        },
+        {
+          label: "En proceso",
+          value: "En proceso",
+        },
+      ],
+    },
+  ];
+
   if (!session) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -87,6 +109,8 @@ export default function Home() {
             text="Crear proceso"
           />
         </div>
+
+        <Filters filters={userFilters} size="sm" setFilters={setFilters} />
 
         {loading ? (
           <div className="flex justify-center py-16">

@@ -4,7 +4,7 @@ type CheckboxProps = {
   [x: string]: any;
   label?: string;
   value: boolean;
-  onChange?: (value: boolean) => void;
+  onChange?: (value: boolean, e?: any) => void;
 };
 export default function CheckboxForm({
   label = "",
@@ -16,15 +16,21 @@ export default function CheckboxForm({
       className={`flex items-center gap-2 select-none ${extraProps.className}`}
     >
       <Checkbox
-        onToggle={() => extraProps.onChange && extraProps.onChange(!value)}
+        onToggle={(e: any) =>
+          extraProps.onChange && extraProps.onChange(!value, e)
+        }
         isChecked={value}
       />
-      <div
-        className="text-sm font-light text-neutral-600 dark:text-neutral-300"
-        onClick={() => extraProps.onChange && extraProps.onChange(!value)}
-      >
-        {label || extraProps.children}
-      </div>
+      {(label || extraProps.children) && (
+        <div
+          className="text-sm font-light text-neutral-600 dark:text-neutral-300"
+          onClick={(e: any) =>
+            extraProps.onChange && extraProps.onChange(!value, e)
+          }
+        >
+          {label || extraProps.children}
+        </div>
+      )}
     </div>
   );
 }
