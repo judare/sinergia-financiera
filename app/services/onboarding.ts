@@ -20,6 +20,11 @@ export const fetchAreas = async function () {
   return result.data.Areas;
 };
 
+export const fetchPositions = async function () {
+  let result = await postRequest("onboarding/positions", {});
+  return result.data.Positions;
+};
+
 export const fetchCourses = async function () {
   let result = await postRequest("onboarding/courses", {});
   return result.data.Courses;
