@@ -11,7 +11,7 @@ export default (sequelize: any, DataTypes: any) => {
       fullName: { type: DataTypes.STRING(150), allowNull: false },
       documentType: { type: DataTypes.STRING(20), allowNull: false },
       documentNumber: { type: DataTypes.STRING(50), allowNull: false },
-      position: { type: DataTypes.STRING(100), allowNull: false },
+      positionId: { type: DataTypes.INTEGER, allowNull: false },
       areaId: { type: DataTypes.INTEGER, allowNull: false },
       startDate: { type: DataTypes.DATEONLY, allowNull: false },
       managerId: { type: DataTypes.INTEGER, allowNull: false },
@@ -43,6 +43,9 @@ export default (sequelize: any, DataTypes: any) => {
     });
     OnboardingProcess.hasOne(models.Workstation, {
       foreignKey: "onboardingProcessId",
+    });
+    OnboardingProcess.belongsTo(models.Position, {
+      foreignKey: "positionId",
     });
   };
 

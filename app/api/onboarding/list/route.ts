@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import db from "@/db/conn";
 import moment from "moment";
 
-const { OnboardingProcess, Area, User, AreaRequest } = db;
+const { OnboardingProcess, Area, User, AreaRequest, Position } = db;
 
 export const POST = withUser(async function ({ user, body }: any) {
   let data = body.data;
@@ -16,6 +16,10 @@ export const POST = withUser(async function ({ user, body }: any) {
 
         include: [
           { model: Area },
+          {
+            model: Position,
+            required: true,
+          },
           {
             model: User,
             as: "Manager",
@@ -44,11 +48,14 @@ export const POST = withUser(async function ({ user, body }: any) {
     fullName: n.OnboardingProcess.fullName,
     documentType: n.OnboardingProcess.documentType,
     documentNumber: n.OnboardingProcess.documentNumber,
-    position: n.OnboardingProcess.position,
     area: n.OnboardingProcess.Area?.name || null,
     startDate: moment(n.OnboardingProcess.startDate).format("DD/MM/YY"),
     manager: n.OnboardingProcess.Manager?.fullName || null,
     status: n.status,
+    Position: {
+      id: n.OnboardingProcess.Position?.id || null,
+      name: n.OnboardingProcess.Position?.name || null,
+    },
   }));
 
   return NextResponse.json({

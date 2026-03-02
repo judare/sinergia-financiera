@@ -16,11 +16,11 @@ export const POST = withUser(async function ({ user, body }: any) {
     fullName: data.fullName,
     documentType: data.documentType,
     documentNumber: data.documentNumber,
-    position: data.position,
+    positionId: data.positionId,
     areaId: data.areaId,
     startDate: moment(data.startDate).toDate(),
     managerId: user.id,
-    status: "Pendiente",
+    status: "pending",
   });
 
   let toInsertRequests = [];
