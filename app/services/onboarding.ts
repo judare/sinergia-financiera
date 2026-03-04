@@ -34,3 +34,8 @@ export const fetchOnboardingReport = async function () {
   let result = await postRequest("onboarding/report", {});
   return result.data;
 };
+
+export const changeStatusApi = async function (id: number, status: string) {
+  let result = await postRequest("onboarding/changeStatus", { id, status });
+  return result.data;
+};

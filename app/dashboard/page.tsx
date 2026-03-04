@@ -7,6 +7,7 @@ import {
   fetchOnboardingList,
   createApi,
   fetchPositions,
+  changeStatusApi,
 } from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
@@ -15,6 +16,8 @@ import { Info } from "lucide-react";
 
 type OnboardingProcess = {
   id: number;
+  onboardingProcessId: number;
+  managerId: number;
   processCode: string;
   fullName: string;
   documentType: string;
@@ -69,6 +72,14 @@ export default function Home() {
       createRef.current?.hideModal();
       loadOnboarding();
     });
+  };
+
+  const handleChangeStatus = async function (
+    process: OnboardingProcess,
+    status: string,
+  ) {
+    await changeStatusApi(process.onboardingProcessId, status);
+    loadOnboarding();
   };
 
   const userFilters = [
@@ -176,17 +187,39 @@ export default function Home() {
                       {process.startDate}
                     </td>
                     <td className="px-4 py-3">
-                      <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                          process.status === "Completado"
-                            ? "bg-green-100 text-green-700"
-                            : process.status === "En proceso"
-                              ? "bg-blue-100 text-blue-700"
-                              : "bg-yellow-100 text-yellow-700"
-                        }`}
-                      >
-                        {process.status}
-                      </span>
+                      {process.status === "pending" &&
+                      process.managerId === session?.user?.id ? (
+                        <select
+                          defaultValue=""
+                          onChange={(e) => {
+                            if (e.target.value)
+                              handleChangeStatus(process, e.target.value);
+                          }}
+                          className="text-xs border border-neutral-200 rounded-lg px-2 py-1 bg-yellow-50 text-yellow-700 focus:outline-none"
+                        >
+                          <option value="" disabled>
+                            Pendiente
+                          </option>
+                          <option value="finished">Finalizado</option>
+                          <option value="rejected">Rechazado</option>
+                        </select>
+                      ) : (
+                        <span
+                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                            process.status === "finished"
+                              ? "bg-green-100 text-green-700"
+                              : process.status === "rejected"
+                                ? "bg-red-100 text-red-700"
+                                : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {process.status === "finished"
+                            ? "Finalizado"
+                            : process.status === "rejected"
+                              ? "Rechazado"
+                              : "Pendiente"}
+                        </span>
+                      )}
                     </td>
                   </tr>
                 ))}

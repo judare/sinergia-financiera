@@ -44,6 +44,8 @@ export const POST = withUser(async function ({ user, body }: any) {
 
   const list = requests.map((n: any) => ({
     id: n.id,
+    onboardingProcessId: n.OnboardingProcess.id,
+    managerId: n.OnboardingProcess.managerId,
     processCode: n.OnboardingProcess.processCode,
     fullName: n.OnboardingProcess.fullName,
     documentType: n.OnboardingProcess.documentType,
@@ -51,7 +53,7 @@ export const POST = withUser(async function ({ user, body }: any) {
     area: n.OnboardingProcess.Position.Area?.name || null,
     startDate: moment(n.OnboardingProcess.startDate).format("DD/MM/YY"),
     manager: n.OnboardingProcess.Manager?.fullName || null,
-    status: n.status,
+    status: n.OnboardingProcess.status,
     Position: {
       id: n.OnboardingProcess.Position?.id || null,
       name: n.OnboardingProcess.Position?.name || null,
