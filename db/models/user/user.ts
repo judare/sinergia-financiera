@@ -64,7 +64,9 @@ export default (sequelize: any, DataTypes: any) => {
   User.getCookieSessionOptions = function () {
     return {
       domain:
-        process.env.NODE_ENV == "production" ? ".sinergia.co" : ".localhost",
+        process.env.NODE_ENV == "production"
+          ? "sinergia-financiera.vercel.app"
+          : ".localhost",
       sameSite: "lax",
       path: "/",
       secure: process.env.NODE_ENV == "production",
