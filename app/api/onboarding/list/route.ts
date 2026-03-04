@@ -51,7 +51,7 @@ export const POST = withUser(async function ({ user, body }: any) {
     documentType: n.OnboardingProcess.documentType,
     documentNumber: n.OnboardingProcess.documentNumber,
     area: n.OnboardingProcess.Position.Area?.name || null,
-    startDate: moment(n.OnboardingProcess.startDate).format("DD/MM/YY"),
+    startDate: moment(n.OnboardingProcess.startDate).format("YYYY-MM-DD"),
     manager: n.OnboardingProcess.Manager?.fullName || null,
     status: n.OnboardingProcess.status,
     Position: {

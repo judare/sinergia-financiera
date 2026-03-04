@@ -39,3 +39,8 @@ export const changeStatusApi = async function (id: number, status: string) {
   let result = await postRequest("onboarding/changeStatus", { id, status });
   return result.data;
 };
+
+export const postponeDateApi = async function (id: number, startDate: string) {
+  let result = await postRequest("onboarding/postponeDate", { id, startDate });
+  return result.data;
+};

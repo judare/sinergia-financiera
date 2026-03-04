@@ -8,6 +8,7 @@ import {
   createApi,
   fetchPositions,
   changeStatusApi,
+  postponeDateApi,
 } from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
@@ -79,6 +80,15 @@ export default function Home() {
     status: string,
   ) {
     await changeStatusApi(process.onboardingProcessId, status);
+    loadOnboarding();
+  };
+
+  const handlePostponeDate = async function (
+    process: OnboardingProcess,
+    startDate: string,
+  ) {
+    if (!startDate) return;
+    await postponeDateApi(process.onboardingProcessId, startDate);
     loadOnboarding();
   };
 
@@ -184,7 +194,26 @@ export default function Home() {
                       {process.manager || "-"}
                     </td>
                     <td className="px-4 py-3 text-neutral-600">
-                      {process.startDate}
+                      {process.status === "pending" &&
+                      process.managerId === session?.user?.id ? (
+                        <input
+                          type="date"
+                          defaultValue={process.startDate?.slice(0, 10)}
+                          min={new Date().toISOString().slice(0, 10)}
+                          className="text-xs border border-neutral-200 rounded-lg px-2 py-1 bg-white focus:outline-none focus:border-blue-400"
+                          onBlur={(e) => {
+                            const val = e.target.value;
+                            if (
+                              val &&
+                              val !== process.startDate?.slice(0, 10)
+                            ) {
+                              handlePostponeDate(process, val);
+                            }
+                          }}
+                        />
+                      ) : (
+                        process.startDate?.slice(0, 10) || "-"
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       {process.status === "pending" &&
