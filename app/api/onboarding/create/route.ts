@@ -2,13 +2,21 @@ import { withUser } from "@/lib/withUser";
 import { NextResponse } from "next/server";
 import db from "@/db/conn";
 import moment from "moment";
+import Email from "@/app/services/mail";
+import OnboardingCreated from "@/emails/OnboardingCreated";
 
-const { OnboardingProcess, Area, AreaRequest } = db;
+const { OnboardingProcess, Area, AreaRequest, User } = db;
 
 export const POST = withUser(async function ({ user, body }: any) {
   let data = body.data;
 
   const areas = await Area.findAll({
+    include: [
+      {
+        model: User,
+        as: "director",
+      },
+    ],
     where: {},
   });
   let onboarding = await OnboardingProcess.create({
@@ -24,6 +32,7 @@ export const POST = withUser(async function ({ user, body }: any) {
   });
 
   let toInsertRequests = [];
+  let emailSender = new Email();
   for (let area of areas) {
     toInsertRequests.push({
       onboardingProcessId: onboarding.id,
@@ -31,6 +40,15 @@ export const POST = withUser(async function ({ user, body }: any) {
       status: "pending",
       deadline: moment().add(1, "month").format("YYYY-MM-DD"),
     });
+
+    emailSender.send(
+      area.director.email,
+      "Nuevo proceso de onboarding",
+      OnboardingCreated,
+      {
+        onboarding,
+      },
+    );
   }
 
   await AreaRequest.bulkCreate(toInsertRequests);
