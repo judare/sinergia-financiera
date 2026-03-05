@@ -32,8 +32,8 @@ export default function CarnetPage() {
   useEffect(() => {
     if (session && id) {
       callApi(id).then((data) => {
-        if (data && data.status === "finished") {
-          setOnboarding(data);
+        if (data && data.OnboardingProcess.status === "finished") {
+          setOnboarding(data.OnboardingProcess);
         } else {
           setNotFound(true);
         }
