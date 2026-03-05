@@ -12,7 +12,7 @@ export default (sequelize: any, DataTypes: any) => {
       documentType: { type: DataTypes.STRING(20), allowNull: false },
       documentNumber: { type: DataTypes.STRING(50), allowNull: false },
       positionId: { type: DataTypes.INTEGER, allowNull: false },
-      areaId: { type: DataTypes.INTEGER, allowNull: false },
+      // areaId: { type: DataTypes.INTEGER, allowNull: false },
       startDate: { type: DataTypes.DATEONLY, allowNull: false },
       managerId: { type: DataTypes.INTEGER, allowNull: false },
       status: { type: DataTypes.STRING(50), defaultValue: "Pendiente" },
@@ -24,7 +24,7 @@ export default (sequelize: any, DataTypes: any) => {
   );
 
   OnboardingProcess.associate = function (models: any) {
-    OnboardingProcess.belongsTo(models.Area, { foreignKey: "areaId" });
+    // OnboardingProcess.belongsTo(models.Area, { foreignKey: "areaId" });
     OnboardingProcess.belongsTo(models.User, {
       as: "Manager",
       foreignKey: "managerId",

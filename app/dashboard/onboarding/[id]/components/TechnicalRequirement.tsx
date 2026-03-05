@@ -68,11 +68,7 @@ export default function TechnicalRequirement({
         value={form.softwareLicenses}
         onChange={set("softwareLicenses")}
       />
-      <DS.Textarea
-        label="Tallas de ropa / dotación"
-        value={form.clothingSizes}
-        onChange={set("clothingSizes")}
-      />
+
       <DS.Button
         text="Guardar requerimientos técnicos"
         variant="primary"

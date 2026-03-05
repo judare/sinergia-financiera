@@ -21,9 +21,8 @@ export const POST = withUser(async function ({ body }: any) {
   const result = await OnboardingProcess.findOne({
     where: { id },
     include: [
-      { model: Area },
       { model: User, as: "Manager", attributes: ["id", "fullName", "email"] },
-      { model: Position },
+      { model: Position, include: [{ model: Area }] },
       { model: TrainingPlan },
       { model: TechnicalRequirement },
       { model: Workstation },
@@ -41,7 +40,7 @@ export const POST = withUser(async function ({ body }: any) {
       documentType: result.documentType,
       documentNumber: result.documentNumber,
       position: result.Position?.name || null,
-      area: result.Area?.name || null,
+      area: result.Position?.Area?.name || null,
       startDate: moment(result.startDate).format("DD/MM/YY"),
       manager: result.Manager?.fullName || null,
       status: result.status,

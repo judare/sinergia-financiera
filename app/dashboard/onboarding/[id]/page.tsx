@@ -30,7 +30,7 @@ type OnboardingProcess = {
 };
 
 const Section = ({ children, title }: any) => (
-  <div className="flex flex-col gap-3 py-10">
+  <div className="flex flex-col gap-3 py-10 bg-white rounded-2xl border border-neutral-200 p-5">
     <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
     {children}
   </div>
@@ -62,7 +62,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-neutral-50">
       <Header />
 
-      <div className="w-1/2 mx-auto flex flex-col divide-y divide-neutral-300 py-10">
+      <div className="w-1/2 mx-auto flex flex-col  py-10 gap-10">
         {onboarding?.status === "finished" && (
           <div className="flex justify-end py-4">
             <a href={`/dashboard/onboarding/carnet/${id}`}>

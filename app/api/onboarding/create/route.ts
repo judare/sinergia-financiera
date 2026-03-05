@@ -14,7 +14,6 @@ export const POST = withUser(async function ({ user, body }: any) {
     include: [
       {
         model: User,
-        as: "director",
       },
     ],
     where: {},
@@ -25,7 +24,7 @@ export const POST = withUser(async function ({ user, body }: any) {
     documentType: data.documentType,
     documentNumber: data.documentNumber,
     positionId: data.positionId,
-    areaId: data.areaId,
+    // areaId: data.areaId,
     startDate: moment(data.startDate).toDate(),
     managerId: user.id,
     status: "pending",
@@ -34,6 +33,7 @@ export const POST = withUser(async function ({ user, body }: any) {
   let toInsertRequests = [];
   let emailSender = new Email();
   for (let area of areas) {
+    console.log(area);
     toInsertRequests.push({
       onboardingProcessId: onboarding.id,
       areaId: area.id,
@@ -41,14 +41,16 @@ export const POST = withUser(async function ({ user, body }: any) {
       deadline: moment().add(1, "month").format("YYYY-MM-DD"),
     });
 
-    emailSender.send(
-      area.director.email,
-      "Nuevo proceso de onboarding",
-      OnboardingCreated,
-      {
-        onboarding,
-      },
-    );
+    if (area.User?.email) {
+      emailSender.send(
+        area.User.email,
+        "Nuevo proceso de onboarding",
+        OnboardingCreated,
+        {
+          onboarding,
+        },
+      );
+    }
   }
 
   await AreaRequest.bulkCreate(toInsertRequests);

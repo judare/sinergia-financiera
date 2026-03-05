@@ -101,7 +101,7 @@ export default function Home() {
       options: [
         {
           label: "Completado",
-          value: "successful",
+          value: "finished",
         },
         {
           label: "En proceso",

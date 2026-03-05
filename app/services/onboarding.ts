@@ -54,3 +54,8 @@ export const fetchActa = async function (id: number) {
   let result = await postRequest("onboarding/acta", { id });
   return result.data.onboarding;
 };
+
+export const fetchWorkstations = async function () {
+  let result = await postRequest("onboarding/workstations", {});
+  return result.data.Workstations;
+};
