@@ -154,9 +154,9 @@ export default function Home() {
                   <th className="text-left px-4 py-3 font-medium text-neutral-600">
                     Área
                   </th>
-                  {/* <th className="text-left px-4 py-3 font-medium text-neutral-600">
-                    Rol
-                  </th> */}
+                  <th className="text-left px-4 py-3 font-medium text-neutral-600">
+                    Correo
+                  </th>
                   <th className="text-left px-4 py-3 font-medium text-neutral-600">
                     Acciones
                   </th>
@@ -177,9 +177,7 @@ export default function Home() {
                     <td className="px-4 py-3 text-neutral-600">
                       {user.Area?.name}
                     </td>
-                    {/* <td className="px-4 py-3 text-neutral-600">
-                      {user.Role?.name}
-                    </td> */}
+                    <td className="px-4 py-3 text-neutral-600">{user.email}</td>
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
                         <DS.Button
