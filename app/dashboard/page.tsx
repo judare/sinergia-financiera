@@ -177,9 +177,24 @@ export default function Home() {
                     className="border-b border-neutral-100 last:border-0 hover:bg-neutral-50 transition-colors"
                   >
                     <td className="px-4 py-3 text-neutral-500 font-mono text-xs">
-                      <a href={`/dashboard/onboarding/${process.id}`}>
-                        {process.processCode}
-                      </a>
+                      {process.status === "finished" ? (
+                        <a
+                          href={`/dashboard/onboarding/acta/${process.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 hover:text-blue-800 underline"
+                        >
+                          <DS.Button
+                            variant="primary"
+                            size="sm"
+                            text="Ver acta"
+                          />
+                        </a>
+                      ) : (
+                        <a href={`/dashboard/onboarding/${process.id}`}>
+                          {process.processCode}
+                        </a>
+                      )}
                     </td>
                     <td className="px-4 py-3 font-medium text-neutral-900">
                       {process.fullName}
@@ -251,12 +266,14 @@ export default function Home() {
                           </span>
                           {process.status === "finished" && (
                             <a
-                              href={`/dashboard/onboarding/acta/${process.id}`}
+                              href={`/dashboard/onboarding/carnet/${process.id}`}
                               target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-blue-600 hover:text-blue-800 underline"
                             >
-                              Ver acta
+                              <DS.Button
+                                variant="primary"
+                                size="sm"
+                                text="Ver carnet"
+                              />
                             </a>
                           )}
                         </div>

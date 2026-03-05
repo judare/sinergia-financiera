@@ -63,15 +63,39 @@ export default function Home() {
       <Header />
 
       <div className="w-1/2 mx-auto flex flex-col divide-y divide-neutral-300 py-10">
+        {onboarding?.status === "finished" && (
+          <div className="flex justify-end py-4">
+            <a href={`/dashboard/onboarding/carnet/${id}`}>
+              <DS.Button variant="primary" size="sm" text="Ver carnet" />
+            </a>
+          </div>
+        )}
+
         <Section title="Información del proceso">
           <DS.Input label="Código" value={onboarding?.processCode} disabled />
           <DS.Input label="Nombre" value={onboarding?.fullName} disabled />
           <DS.Input label="Posición" value={onboarding?.position} disabled />
           <DS.Input label="Área" value={onboarding?.area ?? ""} disabled />
-          <DS.Input label="Tipo de documento" value={onboarding?.documentType} disabled />
-          <DS.Input label="Número de documento" value={onboarding?.documentNumber} disabled />
-          <DS.Input label="Fecha de inicio" value={onboarding?.startDate} disabled />
-          <DS.Input label="Responsable" value={onboarding?.manager ?? ""} disabled />
+          <DS.Input
+            label="Tipo de documento"
+            value={onboarding?.documentType}
+            disabled
+          />
+          <DS.Input
+            label="Número de documento"
+            value={onboarding?.documentNumber}
+            disabled
+          />
+          <DS.Input
+            label="Fecha de inicio"
+            value={onboarding?.startDate}
+            disabled
+          />
+          <DS.Input
+            label="Responsable"
+            value={onboarding?.manager ?? ""}
+            disabled
+          />
         </Section>
 
         <Section title="Plan de capacitación">
