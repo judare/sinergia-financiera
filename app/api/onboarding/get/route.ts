@@ -14,9 +14,20 @@ const {
   AssetsDelivery,
 } = db;
 
-export const POST = withUser(async function ({ body }: any) {
+export const POST = withUser(async function ({ body, user }: any) {
   const { id } = body.data;
-  console.log(id);
+
+  const responsabilities = new Set();
+  let areas = await Area.findAll({
+    where: {
+      directorId: user.id,
+    },
+  });
+  areas.forEach((a: any) => {
+    if (!a.responsability) return;
+    let r = a.responsability.split(",");
+    r.forEach((v: any) => responsabilities.add(v));
+  });
 
   const result = await OnboardingProcess.findOne({
     where: { id },
@@ -33,6 +44,7 @@ export const POST = withUser(async function ({ body }: any) {
   if (!result) return sendError("Proceso no encontrado");
 
   return sendData({
+    responsabilities: Array.from(responsabilities),
     OnboardingProcess: {
       id: result.id,
       processCode: result.processCode,
