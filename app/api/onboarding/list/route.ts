@@ -43,7 +43,7 @@ export const POST = withUser(async function ({ user, body }: any) {
   const requests = await AreaRequest.findAll(queryBuilder);
 
   const list = requests.map((n: any) => ({
-    id: n.id,
+    id: n.OnboardingProcess.id,
     onboardingProcessId: n.OnboardingProcess.id,
     managerId: n.OnboardingProcess.managerId,
     processCode: n.OnboardingProcess.processCode,
