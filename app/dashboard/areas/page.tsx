@@ -14,10 +14,85 @@ import Header from "@/app/components/UI/Header";
 import ConfirmToast from "@/app/components/UI/ConfirmToast";
 import DS, { Loader } from "@/ds";
 
+const RESPONSIBILITY_OPTIONS = [
+  { value: "tech", label: "Tecnología" },
+  { value: "technicalRequirement", label: "Requerimiento técnico" },
+  { value: "workstations", label: "Puesto de trabajo" },
+  { value: "assets_delivery", label: "Entrega de activos" },
+  { value: "trainings", label: "Capacitaciones" },
+  { value: "endowment", label: "Dotación" },
+  { value: "carnet", label: "Carnet" },
+];
+
+const LABEL_MAP: Record<string, string> = Object.fromEntries(
+  RESPONSIBILITY_OPTIONS.map((o) => [o.value, o.label]),
+);
+
+function parseValues(raw: string | null | undefined): string[] {
+  if (!raw) return [];
+  return raw.split(",").filter(Boolean);
+}
+
+function joinValues(values: string[]): string {
+  return values.join(",");
+}
+
+function BadgeList({ values }: { values: string[] }) {
+  if (!values.length)
+    return <span className="text-neutral-400 text-xs">—</span>;
+  return (
+    <div className="flex flex-wrap gap-1">
+      {values.map((v) => (
+        <span
+          key={v}
+          className="bg-neutral-100 text-neutral-700 text-xs px-2 py-0.5 rounded-full whitespace-nowrap"
+        >
+          {LABEL_MAP[v] ?? v}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function CheckboxGroup({
+  selected,
+  onChange,
+}: {
+  selected: string[];
+  onChange: (values: string[]) => void;
+}) {
+  const toggle = (value: string) => {
+    if (selected.includes(value)) {
+      onChange(selected.filter((v) => v !== value));
+    } else {
+      onChange([...selected, value]);
+    }
+  };
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {RESPONSIBILITY_OPTIONS.map((opt) => (
+        <label
+          key={opt.value}
+          className="flex items-center gap-2 cursor-pointer text-sm text-neutral-700"
+        >
+          <input
+            type="checkbox"
+            checked={selected.includes(opt.value)}
+            onChange={() => toggle(opt.value)}
+            className="rounded"
+          />
+          {opt.label}
+        </label>
+      ))}
+    </div>
+  );
+}
+
 export default function AreasPage() {
   const { data: session } = useSession();
   const { callApi, loading } = useApi(fetchAreas);
-  const { callApi: callCreate, loading: loadingCreate } = useApi(fetchCreateArea);
+  const { callApi: callCreate, loading: loadingCreate } =
+    useApi(fetchCreateArea);
   const { callApi: callEdit, loading: loadingEdit } = useApi(fetchUpdateArea);
   const { callApi: callDelete } = useApi(fetchDeleteArea);
   const { callApi: callUsers } = useApi(fetchUsers);
@@ -30,8 +105,18 @@ export default function AreasPage() {
   const editRef = useRef<any>(null);
   const toastRef = useRef<any>(null);
 
-  const [createForm, setCreateForm] = useState({ name: "", directorId: "" });
-  const [editForm, setEditForm] = useState({ name: "", directorId: "" });
+  const [createForm, setCreateForm] = useState({
+    name: "",
+    directorId: "",
+    responsability: [] as string[],
+    responsabilities: [] as string[],
+  });
+  const [editForm, setEditForm] = useState({
+    name: "",
+    directorId: "",
+    responsability: [] as string[],
+    responsabilities: [] as string[],
+  });
 
   useEffect(() => {
     if (session) {
@@ -51,7 +136,12 @@ export default function AreasPage() {
   };
 
   const handleCreate = () => {
-    setCreateForm({ name: "", directorId: "" });
+    setCreateForm({
+      name: "",
+      directorId: "",
+      responsability: [],
+      responsabilities: [],
+    });
     createRef.current?.showModal();
   };
 
@@ -60,6 +150,8 @@ export default function AreasPage() {
       await callCreate({
         name: createForm.name,
         directorId: parseInt(createForm.directorId),
+        responsability: joinValues(createForm.responsability),
+        responsabilities: joinValues(createForm.responsabilities),
       });
       createRef.current?.hideModal();
       toastRef.current?.show("Área creada correctamente");
@@ -72,6 +164,8 @@ export default function AreasPage() {
     setEditForm({
       name: area.name,
       directorId: String(area.User?.id || area.directorId || ""),
+      responsability: parseValues(area.responsability),
+      responsabilities: parseValues(area.responsabilities),
     });
     editRef.current?.showModal();
   };
@@ -82,6 +176,8 @@ export default function AreasPage() {
         areaId: selectedArea.id,
         name: editForm.name,
         directorId: parseInt(editForm.directorId),
+        responsability: joinValues(editForm.responsability),
+        responsabilities: joinValues(editForm.responsabilities),
       });
       editRef.current?.hideModal();
       toastRef.current?.show("Área actualizada correctamente");
@@ -90,7 +186,8 @@ export default function AreasPage() {
   };
 
   const handleDelete = async (areaId: number) => {
-    if (!window.confirm("¿Estás seguro de que deseas eliminar esta área?")) return;
+    if (!window.confirm("¿Estás seguro de que deseas eliminar esta área?"))
+      return;
     try {
       await callDelete({ areaId });
       toastRef.current?.show("Área eliminada correctamente");
@@ -150,6 +247,12 @@ export default function AreasPage() {
                     Correo director
                   </th>
                   <th className="text-left px-4 py-3 font-medium text-neutral-600">
+                    Responsabilidad
+                  </th>
+                  <th className="text-left px-4 py-3 font-medium text-neutral-600">
+                    Responsabilidades
+                  </th>
+                  <th className="text-left px-4 py-3 font-medium text-neutral-600">
                     Acciones
                   </th>
                 </tr>
@@ -173,6 +276,12 @@ export default function AreasPage() {
                       {area.User?.email ?? "—"}
                     </td>
                     <td className="px-4 py-3">
+                      <BadgeList values={parseValues(area.responsability)} />
+                    </td>
+                    <td className="px-4 py-3">
+                      <BadgeList values={parseValues(area.responsabilities)} />
+                    </td>
+                    <td className="px-4 py-3">
                       <div className="flex gap-2">
                         <DS.Button
                           variant="secondary"
@@ -193,7 +302,10 @@ export default function AreasPage() {
                 ))}
                 {areas.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-4 py-8 text-center text-neutral-400">
+                    <td
+                      colSpan={7}
+                      className="px-4 py-8 text-center text-neutral-400"
+                    >
                       No hay áreas registradas
                     </td>
                   </tr>
@@ -207,7 +319,7 @@ export default function AreasPage() {
       <DS.Modal
         ref={createRef}
         title="Crear área"
-        size="sm"
+        size="md"
         footer={
           <DS.Button
             variant="primary"
@@ -218,7 +330,7 @@ export default function AreasPage() {
           />
         }
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <DS.Input
             label="Nombre del área"
             value={createForm.name}
@@ -228,15 +340,39 @@ export default function AreasPage() {
             label="Director"
             value={createForm.directorId}
             options={userOptions}
-            onChange={(v: string) => setCreateForm((f) => ({ ...f, directorId: v }))}
+            onChange={(v: string) =>
+              setCreateForm((f) => ({ ...f, directorId: v }))
+            }
           />
+          <div>
+            <p className="text-sm font-medium text-neutral-700 mb-2">
+              Responsabilidad (gestión para otras áreas)
+            </p>
+            <CheckboxGroup
+              selected={createForm.responsability}
+              onChange={(v) =>
+                setCreateForm((f) => ({ ...f, responsability: v }))
+              }
+            />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-neutral-700 mb-2">
+              Responsabilidades (requerimientos para esta área)
+            </p>
+            <CheckboxGroup
+              selected={createForm.responsabilities}
+              onChange={(v) =>
+                setCreateForm((f) => ({ ...f, responsabilities: v }))
+              }
+            />
+          </div>
         </div>
       </DS.Modal>
 
       <DS.Modal
         ref={editRef}
         title="Editar área"
-        size="sm"
+        size="md"
         footer={
           <DS.Button
             variant="primary"
@@ -247,7 +383,7 @@ export default function AreasPage() {
           />
         }
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <DS.Input
             label="Nombre del área"
             value={editForm.name}
@@ -257,8 +393,32 @@ export default function AreasPage() {
             label="Director"
             value={editForm.directorId}
             options={userOptions}
-            onChange={(v: string) => setEditForm((f) => ({ ...f, directorId: v }))}
+            onChange={(v: string) =>
+              setEditForm((f) => ({ ...f, directorId: v }))
+            }
           />
+          <div>
+            <p className="text-sm font-medium text-neutral-700 mb-2">
+              Responsabilidad (gestión para otras áreas)
+            </p>
+            <CheckboxGroup
+              selected={editForm.responsability}
+              onChange={(v) =>
+                setEditForm((f) => ({ ...f, responsability: v }))
+              }
+            />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-neutral-700 mb-2">
+              Responsabilidades (requerimientos para esta área)
+            </p>
+            <CheckboxGroup
+              selected={editForm.responsabilities}
+              onChange={(v) =>
+                setEditForm((f) => ({ ...f, responsabilities: v }))
+              }
+            />
+          </div>
         </div>
       </DS.Modal>
 

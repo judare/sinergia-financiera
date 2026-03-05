@@ -5,7 +5,7 @@ import db from "@/db/conn";
 const { Area } = db;
 
 export const POST = withUser(async function ({ body }: any) {
-  const { areaId, name, directorId } = body.data;
+  const { areaId, name, directorId, responsability, responsabilities } = body.data;
 
   if (!areaId) {
     return sendError("areaId es requerido");
@@ -16,7 +16,7 @@ export const POST = withUser(async function ({ body }: any) {
     return sendError("Área no encontrada");
   }
 
-  await area.update({ name, directorId });
+  await area.update({ name, directorId, responsability, responsabilities });
 
   return sendData({ area });
 });

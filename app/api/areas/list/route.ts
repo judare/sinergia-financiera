@@ -6,7 +6,13 @@ const { Area, User } = db;
 
 export const POST = withUser(async function ({}: any) {
   const areas = await Area.findAll({
-    include: [{ model: User, as: "User", attributes: ["id", "fullName", "email"] }],
+    include: [
+      {
+        model: User,
+        as: "User",
+        attributes: ["id", "fullName", "email"],
+      },
+    ],
     order: [["id", "ASC"]],
   });
 
