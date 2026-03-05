@@ -20,6 +20,10 @@ export default function Header() {
       name: "Reportes",
       href: "/dashboard/report",
     },
+    {
+      name: "Áreas",
+      href: "/dashboard/areas",
+    },
   ];
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-[#2d4b68] border-b border-neutral-200 text-white">
