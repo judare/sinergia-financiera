@@ -34,7 +34,11 @@ export const POST = withUser(async function ({ user, body }: any) {
 
   if (process.status !== "pending") {
     return NextResponse.json(
-      { data: { message: "Solo se puede cambiar el estado de procesos pendientes" } },
+      {
+        data: {
+          message: "Solo se puede cambiar el estado de procesos pendientes",
+        },
+      },
       { status: 400 },
     );
   }
