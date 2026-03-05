@@ -7,7 +7,7 @@ export const fetchOnboardingList = async function (data: any) {
 
 export const fetchOnboarding = async function (id: number) {
   let result = await postRequest("onboarding/get", { id });
-  return result.data.OnboardingProcess;
+  return result.data;
 };
 
 export const updateOnboardingApi = async function (data: any) {

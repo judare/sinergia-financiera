@@ -41,11 +41,13 @@ export default function Home() {
   const { data: session } = useSession();
   const { callApi, loading } = useApi(fetchOnboarding);
   const [onboarding, setOnboarding] = useState<OnboardingProcess | null>(null);
+  const [responsabilities, setResponsabilities] = useState<string[]>([]);
 
   useEffect(() => {
     if (session && id) {
       callApi(Number(id)).then((data) => {
-        if (data) setOnboarding(data);
+        setResponsabilities(data.responsabilities);
+        setOnboarding(data.OnboardingProcess);
       });
     }
   }, [session, id]);
@@ -98,41 +100,49 @@ export default function Home() {
           />
         </Section>
 
-        <Section title="Plan de capacitación">
-          {onboarding && (
-            <TrainingPlan
-              onboardingId={onboarding.id}
-              initialTrainingPlans={onboarding.trainingPlans}
-            />
-          )}
-        </Section>
+        {responsabilities.includes("trainings") && (
+          <Section title="Plan de capacitación">
+            {onboarding && (
+              <TrainingPlan
+                onboardingId={onboarding.id}
+                initialTrainingPlans={onboarding.trainingPlans}
+              />
+            )}
+          </Section>
+        )}
 
-        <Section title="Puesto de trabajo">
-          {onboarding && (
-            <Workstation
-              onboardingId={onboarding.id}
-              initialWorkstation={onboarding.workstation}
-            />
-          )}
-        </Section>
+        {responsabilities.includes("workstations") && (
+          <Section title="Puesto de trabajo">
+            {onboarding && (
+              <Workstation
+                onboardingId={onboarding.id}
+                initialWorkstation={onboarding.workstation}
+              />
+            )}
+          </Section>
+        )}
 
-        <Section title="Entrega de activos">
-          {onboarding && (
-            <AssetsDelivery
-              onboardingId={onboarding.id}
-              initialAssets={onboarding.assetsDeliveries}
-            />
-          )}
-        </Section>
+        {responsabilities.includes("assets_delivery") && (
+          <Section title="Entrega de activos">
+            {onboarding && (
+              <AssetsDelivery
+                onboardingId={onboarding.id}
+                initialAssets={onboarding.assetsDeliveries}
+              />
+            )}
+          </Section>
+        )}
 
-        <Section title="Requerimientos técnicos">
-          {onboarding && (
-            <TechnicalRequirement
-              onboardingId={onboarding.id}
-              initialData={onboarding.technicalRequirement}
-            />
-          )}
-        </Section>
+        {responsabilities.includes("technicalRequirement") && (
+          <Section title="Requerimientos técnicos">
+            {onboarding && (
+              <TechnicalRequirement
+                onboardingId={onboarding.id}
+                initialData={onboarding.technicalRequirement}
+              />
+            )}
+          </Section>
+        )}
       </div>
     </div>
   );
