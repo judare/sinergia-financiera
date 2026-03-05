@@ -1,35 +1,54 @@
 import { withUser } from "@/lib/withUser";
-import { NextResponse } from "next/server";
+import { sendData, sendError } from "@/lib/response";
 import db from "@/db/conn";
 import moment from "moment";
 
-const { OnboardingProcess, Area, User } = db;
+const {
+  OnboardingProcess,
+  Area,
+  User,
+  Position,
+  TrainingPlan,
+  TechnicalRequirement,
+  Workstation,
+  AssetsDelivery,
+} = db;
 
-export const POST = withUser(async function ({}: any) {
+export const POST = withUser(async function ({ body }: any) {
+  const { id } = body.data;
+  console.log(id);
+
   const result = await OnboardingProcess.findOne({
+    where: { id },
     include: [
       { model: Area },
       { model: User, as: "Manager", attributes: ["id", "fullName", "email"] },
+      { model: Position },
+      { model: TrainingPlan },
+      { model: TechnicalRequirement },
+      { model: Workstation },
+      { model: AssetsDelivery },
     ],
-    where: {
-      processCode: 1,
-    },
   });
 
-  return NextResponse.json({
-    data: {
-      OnboardingProcess: {
-        id: result.id,
-        processCode: result.processCode,
-        fullName: result.fullName,
-        documentType: result.documentType,
-        documentNumber: result.documentNumber,
-        position: result.position,
-        area: result.Area?.name || null,
-        startDate: moment(result.startDate).format("DD/MM/YY"),
-        manager: result.Manager?.fullName || null,
-        status: result.status,
-      },
+  if (!result) return sendError("Proceso no encontrado");
+
+  return sendData({
+    OnboardingProcess: {
+      id: result.id,
+      processCode: result.processCode,
+      fullName: result.fullName,
+      documentType: result.documentType,
+      documentNumber: result.documentNumber,
+      position: result.Position?.name || null,
+      area: result.Area?.name || null,
+      startDate: moment(result.startDate).format("DD/MM/YY"),
+      manager: result.Manager?.fullName || null,
+      status: result.status,
+      trainingPlans: result.TrainingPlans || [],
+      technicalRequirement: result.TechnicalRequirement || null,
+      workstation: result.Workstation || null,
+      assetsDeliveries: result.AssetsDeliveries || [],
     },
   });
 });

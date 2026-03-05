@@ -5,9 +5,14 @@ export const fetchOnboardingList = async function (data: any) {
   return result.data.OnboardingProcesses;
 };
 
-export const fetchOnboarding = async function (processingCode: string) {
-  let result = await postRequest("onboarding/get", { processingCode });
+export const fetchOnboarding = async function (id: number) {
+  let result = await postRequest("onboarding/get", { id });
   return result.data.OnboardingProcess;
+};
+
+export const updateOnboardingApi = async function (data: any) {
+  let result = await postRequest("onboarding/update", data);
+  return result.data;
 };
 
 export const createApi = async function (data: any) {

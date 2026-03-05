@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { useSession } from "@/app/hooks/useSession";
 import { useApi } from "@/app/hooks/useApi";
-import {
-  fetchOnboarding,
-  createApi,
-  fetchAreas,
-} from "@/app/services/onboarding";
+import { fetchOnboarding } from "@/app/services/onboarding";
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
-import SelectCourse from "./components/SelectCourse";
+import TrainingPlan from "./components/TrainingPlan";
+import Workstation from "./components/Workstation";
+import AssetsDelivery from "./components/AssetsDelivery";
+import TechnicalRequirement from "./components/TechnicalRequirement";
 
 type OnboardingProcess = {
   id: number;
@@ -23,57 +23,34 @@ type OnboardingProcess = {
   startDate: string;
   manager: string | null;
   status: string;
+  trainingPlans: any[];
+  technicalRequirement: any;
+  workstation: any;
+  assetsDeliveries: any[];
 };
 
-const Section = ({ children, title }: any) => {
-  return (
-    <div className="flex flex-col gap-3 py-10">
-      <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
-      {children}
-    </div>
-  );
-};
+const Section = ({ children, title }: any) => (
+  <div className="flex flex-col gap-3 py-10">
+    <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
+    {children}
+  </div>
+);
 
 export default function Home() {
+  const { id } = useParams<{ id: string }>();
   const { data: session } = useSession();
   const { callApi, loading } = useApi(fetchOnboarding);
-  const { callApi: callApiCreate } = useApi(createApi);
-  const { callApi: callApiAreas } = useApi(fetchAreas);
   const [onboarding, setOnboarding] = useState<OnboardingProcess | null>(null);
-  const [areas, setAreas] = useState<any>([]);
-  const createRef = useRef<any>(null);
-
-  const [form, setForm] = useState<any>({});
 
   useEffect(() => {
-    if (session) {
-      loadOnboarding();
-      loadAreas();
+    if (session && id) {
+      callApi(Number(id)).then((data) => {
+        if (data) setOnboarding(data);
+      });
     }
-  }, [session]);
+  }, [session, id]);
 
-  const loadAreas = async () => {
-    const data = await callApiAreas();
-    if (data) setAreas(data);
-  };
-
-  const loadOnboarding = async () => {
-    const data = await callApi();
-    if (data) setOnboarding(data);
-  };
-
-  const handleCreate = function () {
-    createRef.current?.showModal();
-  };
-
-  const handleSubmitCreate = function () {
-    callApiCreate(form).then(() => {
-      createRef.current?.hideModal();
-      loadOnboarding();
-    });
-  };
-
-  if (!session) {
+  if (!session || loading) {
     return (
       <div className="flex items-center justify-center h-screen">
         <Loader />
@@ -90,46 +67,47 @@ export default function Home() {
           <DS.Input label="Código" value={onboarding?.processCode} disabled />
           <DS.Input label="Nombre" value={onboarding?.fullName} disabled />
           <DS.Input label="Posición" value={onboarding?.position} disabled />
-
-          <DS.Input
-            label="Tipo de documento"
-            value={onboarding?.documentType}
-            disabled
-          />
-          <DS.Input
-            label="Número de documento"
-            value={onboarding?.documentNumber}
-            disabled
-          />
+          <DS.Input label="Área" value={onboarding?.area ?? ""} disabled />
+          <DS.Input label="Tipo de documento" value={onboarding?.documentType} disabled />
+          <DS.Input label="Número de documento" value={onboarding?.documentNumber} disabled />
+          <DS.Input label="Fecha de inicio" value={onboarding?.startDate} disabled />
+          <DS.Input label="Responsable" value={onboarding?.manager ?? ""} disabled />
         </Section>
 
-        <Section title="Escoger cursos">
-          <SelectCourse
-            onChange={(checked: any) => {
-              setForm({ ...form, courseIds: checked });
-            }}
-          />
-        </Section>
-        <Section title="Escoger lugar de trabajo">
-          <div
-            className="grid grid-cols-8 gap-3  px-10 py-10 items-center justify-center rounded-2xl"
-            style={{
-              backgroundImage: `url(/piso.jpg)`,
-            }}
-          >
-            {Array.from({ length: 72 }).map((row, i) => (
-              <div className="size-10 rounded-lg bg-sky-500 hover:bg-sky-800"></div>
-            ))}
-          </div>
+        <Section title="Plan de capacitación">
+          {onboarding && (
+            <TrainingPlan
+              onboardingId={onboarding.id}
+              initialTrainingPlans={onboarding.trainingPlans}
+            />
+          )}
         </Section>
 
-        <Section>
-          <DS.Button
-            onClick={handleCreate}
-            text="Guardar "
-            variant="primary"
-            size="lg"
-          />
+        <Section title="Puesto de trabajo">
+          {onboarding && (
+            <Workstation
+              onboardingId={onboarding.id}
+              initialWorkstation={onboarding.workstation}
+            />
+          )}
+        </Section>
+
+        <Section title="Entrega de activos">
+          {onboarding && (
+            <AssetsDelivery
+              onboardingId={onboarding.id}
+              initialAssets={onboarding.assetsDeliveries}
+            />
+          )}
+        </Section>
+
+        <Section title="Requerimientos técnicos">
+          {onboarding && (
+            <TechnicalRequirement
+              onboardingId={onboarding.id}
+              initialData={onboarding.technicalRequirement}
+            />
+          )}
         </Section>
       </div>
     </div>
