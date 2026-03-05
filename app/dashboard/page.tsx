@@ -233,21 +233,33 @@ export default function Home() {
                           <option value="rejected">Rechazado</option>
                         </select>
                       ) : (
-                        <span
-                          className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                            process.status === "finished"
-                              ? "bg-green-100 text-green-700"
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                              process.status === "finished"
+                                ? "bg-green-100 text-green-700"
+                                : process.status === "rejected"
+                                  ? "bg-red-100 text-red-700"
+                                  : "bg-yellow-100 text-yellow-700"
+                            }`}
+                          >
+                            {process.status === "finished"
+                              ? "Finalizado"
                               : process.status === "rejected"
-                                ? "bg-red-100 text-red-700"
-                                : "bg-yellow-100 text-yellow-700"
-                          }`}
-                        >
-                          {process.status === "finished"
-                            ? "Finalizado"
-                            : process.status === "rejected"
-                              ? "Rechazado"
-                              : "Pendiente"}
-                        </span>
+                                ? "Rechazado"
+                                : "Pendiente"}
+                          </span>
+                          {process.status === "finished" && (
+                            <a
+                              href={`/dashboard/onboarding/acta/${process.id}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-blue-600 hover:text-blue-800 underline"
+                            >
+                              Ver acta
+                            </a>
+                          )}
+                        </div>
                       )}
                     </td>
                   </tr>

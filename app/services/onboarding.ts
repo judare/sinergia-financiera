@@ -44,3 +44,8 @@ export const postponeDateApi = async function (id: number, startDate: string) {
   let result = await postRequest("onboarding/postponeDate", { id, startDate });
   return result.data;
 };
+
+export const fetchActa = async function (id: number) {
+  let result = await postRequest("onboarding/acta", { id });
+  return result.data.onboarding;
+};
