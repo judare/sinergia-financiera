@@ -23,8 +23,8 @@ export function Layout({ children }: any) {
           <div className="bg-white rounded-lg  text-black  px-10 text-center border border-neutral-200">
             <div>
               <img
-                src="https://talkia.co/logo.png"
-                alt="Talkia"
+                src="https://sinergia-financiera.vercel.app/logo.png"
+                alt="Logo"
                 className="h-8 mx-auto "
               />
             </div>
@@ -32,7 +32,7 @@ export function Layout({ children }: any) {
             <div className="py-10">{children}</div>
             <div className="w-full h-1 bg-neutral-200 mb-3 "></div>
             <div className=" pb-5  text-sm font-light   text-neutral-500">
-              Blokay - All rights reserved
+              Sinergia Financiera
             </div>
           </div>
         </Container>

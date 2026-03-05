@@ -58,6 +58,8 @@ export const POST = withUser(async function ({ user, body }: any) {
     });
 
     if (area.User?.email) {
+      console.log(area, area.User?.email);
+      console.log(OnboardingCreated);
       emailSender.send(
         area.User.email,
         "Nuevo proceso de onboarding",

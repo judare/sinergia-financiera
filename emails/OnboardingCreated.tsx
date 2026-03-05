@@ -9,9 +9,9 @@ export default function OnboardingCreated(context: any) {
         </h1>
         <p className="font-light text-neutral-500">
           Datos:
-          <div>{context.onboarding.processCode}</div>
-          <div>{context.onboarding.fullName}</div>
-          <div>{context.onboarding.documentType}</div>
+          <div>{context.onboarding?.processCode}</div>
+          <div>{context.onboarding?.fullName}</div>
+          <div>{context.onboarding?.documentType}</div>
         </p>
       </div>
     </Layout>
