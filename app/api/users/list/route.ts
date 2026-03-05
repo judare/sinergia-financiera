@@ -12,10 +12,10 @@ export const POST = withUser(async function ({ user }: any) {
         model: Area,
         required: true,
       },
-      {
-        model: Role,
-        required: true,
-      },
+      // {
+      //   model: Role,
+      //   required: true,
+      // },
     ],
     where: {},
   });
@@ -26,10 +26,10 @@ export const POST = withUser(async function ({ user }: any) {
     email: n.email,
     rol: n.rol,
     lastActionAt: moment(n.lastActionAt).format("DD/MM/YY"),
-    Role: {
-      id: n.Role.id,
-      name: n.Role.name,
-    },
+    // Role: {
+    //   id: n.Role.id,
+    //   name: n.Role.name,
+    // },
     Area: {
       id: n.Area.id,
       name: n.Area.name,

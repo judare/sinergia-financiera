@@ -9,7 +9,7 @@ export default (sequelize: any, DataTypes: any) => {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       fullName: { type: DataTypes.STRING, allowNull: true },
       email: { type: DataTypes.STRING, allowNull: true },
-      roleId: { type: DataTypes.INTEGER, allowNull: true },
+      // roleId: { type: DataTypes.INTEGER, allowNull: true },
       areaId: { type: DataTypes.INTEGER, allowNull: true },
       password: {
         type: DataTypes.STRING,
@@ -30,7 +30,7 @@ export default (sequelize: any, DataTypes: any) => {
   );
 
   User.associate = function (models: any) {
-    User.belongsTo(models.Role, { foreignKey: "roleId" });
+    // User.belongsTo(models.Role, { foreignKey: "roleId" });
     User.belongsTo(models.Area, { foreignKey: "areaId" });
     User.hasMany(models.OnboardingProcess, {
       as: "ManagedProcesses",

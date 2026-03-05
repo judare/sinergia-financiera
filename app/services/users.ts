@@ -11,6 +11,11 @@ export const fetchUser = async function (userId: number) {
   return result.data;
 };
 
+export const fetchCreateUser = async function (data: any) {
+  let result = await postRequest("users/create", data);
+  return result.data;
+};
+
 export const fetchAddUser = async function (data: any) {
   let result = await postRequest("users/add", data);
   return result.data;

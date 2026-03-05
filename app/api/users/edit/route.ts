@@ -1,55 +1,16 @@
-import { withAdmin } from "@/lib/withUser";
-import { NextResponse } from "next/server";
+import { withUser } from "@/lib/withUser";
+import { sendData } from "@/lib/response";
 import db from "@/db/conn";
 
-const { User, UserPermission, View } = db;
+const { User } = db;
 
-export const POST = withAdmin(async function ({ user, body }: any) {
-  let permissions = body.data.permissions;
-
-  const userToEdit = await User.findOne({
-    where: {
-      id: body.data.userId,
-      businessId: user.businessId,
-    },
-  });
+export const POST = withUser(async function ({ body }: any) {
+  const userToEdit = await User.findByPk(body.data.userId);
 
   await userToEdit.update({
-    rol: body.data.rol,
-    name: body.data.name,
-    extra1: body.data.extra1,
-    extra2: body.data.extra2,
-    extra3: body.data.extra3,
+    fullName: body.data.fullName,
+    areaId: body.data.areaId,
   });
 
-  // clear all the permissions
-  await UserPermission.destroy({
-    where: {
-      userId: userToEdit.id,
-    },
-  });
-
-  const viewIds = Object.keys(permissions).filter((v) => permissions[v]);
-  let queryBuilder = {
-    where: {
-      id: { [db.Op.in]: viewIds },
-      businessId: user.businessId,
-    },
-  };
-  let views = await View.findAll(queryBuilder);
-
-  let bulkCreate = [];
-  for (let view of views) {
-    bulkCreate.push({
-      viewId: view.id,
-      userId: userToEdit.id,
-    });
-  }
-  if (bulkCreate.length > 0) {
-    await UserPermission.bulkCreate(bulkCreate);
-  }
-
-  return NextResponse.json({
-    data: {},
-  });
+  return sendData({});
 });
