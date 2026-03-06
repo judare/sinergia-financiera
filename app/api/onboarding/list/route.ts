@@ -37,6 +37,12 @@ export const POST = withUser(async function ({ user, body }: any) {
     queryBuilderOnboarding.where.positionId = data.filters.positionId;
   }
 
+  if (data.filters?.search) {
+    queryBuilderOnboarding.where.fullName = {
+      [db.Op.like]: `%${data.filters.search}%`,
+    };
+  }
+
   const queryBuilder: any = {
     include: [queryBuilderOnboarding],
     where: {

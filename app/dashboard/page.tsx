@@ -13,7 +13,7 @@ import {
 import Header from "@/app/components/UI/Header";
 import DS, { Loader } from "@/ds";
 import Filters from "@/app/components/Filters";
-import { Info } from "lucide-react";
+import { Info, Search } from "lucide-react";
 
 type OnboardingProcess = {
   id: number;
@@ -122,6 +122,12 @@ export default function Home() {
         label: p.name,
         value: p.id,
       })),
+    },
+    {
+      label: "Buscar",
+      type: "text",
+      name: "search",
+      icon: Search,
     },
   ];
 
