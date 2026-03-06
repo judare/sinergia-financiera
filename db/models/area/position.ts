@@ -7,6 +7,7 @@ export default (sequelize: any, DataTypes: any) => {
       areaId: { type: DataTypes.STRING(100), allowNull: false },
       description: { type: DataTypes.STRING, allowNull: false },
       bossId: { type: DataTypes.INTEGER, allowNull: false },
+      suggestionCourses: { type: DataTypes.STRING(1000), allowNull: true },
     },
     {
       tableName: "positions",

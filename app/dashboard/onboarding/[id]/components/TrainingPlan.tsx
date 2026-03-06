@@ -14,9 +14,11 @@ type TrainingPlanItem = {
 export default function TrainingPlan({
   onboardingId,
   initialTrainingPlans,
+  suggestionCourses,
 }: {
   onboardingId: number;
   initialTrainingPlans: any[];
+  suggestionCourses: number[];
 }) {
   const toastRef = useRef<any>(null);
   const { callApi: loadCourses } = useApi(fetchCourses);
@@ -37,7 +39,7 @@ export default function TrainingPlan({
         initialTrainingPlans.map((tp: any) => ({
           courseId: tp.courseId,
           description: tp.description || "",
-        }))
+        })),
       );
     }
   }, [initialTrainingPlans]);
@@ -52,7 +54,9 @@ export default function TrainingPlan({
   };
 
   const setDescription = (courseId: number, description: string) => {
-    setItems(items.map((i) => (i.courseId === courseId ? { ...i, description } : i)));
+    setItems(
+      items.map((i) => (i.courseId === courseId ? { ...i, description } : i)),
+    );
   };
 
   const handleSave = async () => {
@@ -80,12 +84,21 @@ export default function TrainingPlan({
                   className="shrink-0"
                 />
                 <div className="flex-1">
-                  <p className="text-sm font-semibold text-neutral-900">{course.name}</p>
-                  <p className="text-xs text-neutral-500">{course.observation}</p>
+                  <p className="text-sm font-semibold text-neutral-900">
+                    {course.name}
+                  </p>
+                  <p className="text-xs text-neutral-500">
+                    {course.observation}
+                  </p>
                 </div>
                 <span className="text-xs text-neutral-400 ml-auto">
                   {course.mode === "virtual" ? "Virtual" : "Presencial"}
                 </span>
+                {suggestionCourses.includes(course.id) && (
+                  <span className="text-xs text-green-800 bg-lime-100 ml-auto font-bold">
+                    Sugerido
+                  </span>
+                )}
               </div>
               {selected && (
                 <DS.Input

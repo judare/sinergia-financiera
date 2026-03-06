@@ -27,6 +27,7 @@ type OnboardingProcess = {
   technicalRequirement: any;
   workstation: any;
   assetsDeliveries: any[];
+  suggestionCourses: number[];
 };
 
 const Section = ({ children, title }: any) => (
@@ -106,6 +107,7 @@ export default function Home() {
               <TrainingPlan
                 onboardingId={onboarding.id}
                 initialTrainingPlans={onboarding.trainingPlans}
+                suggestionCourses={onboarding.suggestionCourses}
               />
             )}
           </Section>

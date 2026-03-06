@@ -52,6 +52,9 @@ export const POST = withUser(async function ({ body, user }: any) {
       documentType: result.documentType,
       documentNumber: result.documentNumber,
       position: result.Position?.name || null,
+      suggestionCourses:
+        result.Position?.suggestionCourses?.split(",")?.map((x: any) => +x) ||
+        [],
       area: result.Position?.Area?.name || null,
       startDate: moment(result.startDate).format("DD/MM/YY"),
       manager: result.Manager?.fullName || null,
