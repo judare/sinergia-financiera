@@ -107,7 +107,21 @@ export default function Home() {
           label: "En proceso",
           value: "pending",
         },
+        {
+          label: "Rechazado",
+          value: "rejected",
+        },
       ],
+    },
+    {
+      label: "Posición",
+      type: "select",
+      name: "positionId",
+      icon: Info,
+      options: positions.map((p: any) => ({
+        label: p.name,
+        value: p.id,
+      })),
     },
   ];
 

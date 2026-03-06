@@ -8,37 +8,42 @@ const { OnboardingProcess, Area, User, AreaRequest, Position } = db;
 export const POST = withUser(async function ({ user, body }: any) {
   let data = body.data;
 
-  const queryBuilder: any = {
+  const queryBuilderOnboarding: any = {
+    model: OnboardingProcess,
+    required: true,
+    where: {},
+
     include: [
       {
-        model: OnboardingProcess,
+        include: [{ model: Area }],
+        model: Position,
         required: true,
-
-        include: [
-          {
-            include: [{ model: Area }],
-            model: Position,
-            required: true,
-          },
-          {
-            model: User,
-            as: "Manager",
-            attributes: ["id", "fullName", "email"],
-          },
-        ],
+      },
+      {
+        model: User,
+        as: "Manager",
+        attributes: ["id", "fullName", "email"],
       },
     ],
+  };
+
+  if (data.filters?.status) {
+    queryBuilderOnboarding.where.status = data.filters.status;
+  } else {
+    queryBuilderOnboarding.where.status = "pending";
+  }
+
+  if (data.filters?.positionId) {
+    queryBuilderOnboarding.where.positionId = data.filters.positionId;
+  }
+
+  const queryBuilder: any = {
+    include: [queryBuilderOnboarding],
     where: {
       areaId: user.areaId,
     },
     order: [["createdAt", "DESC"]],
   };
-
-  if (data.filters?.status) {
-    queryBuilder.where.status = data.filters.status;
-  } else {
-    queryBuilder.where.status = "pending";
-  }
 
   const requests = await AreaRequest.findAll(queryBuilder);
 
