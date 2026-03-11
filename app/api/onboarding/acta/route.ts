@@ -12,6 +12,7 @@ const {
   TechnicalRequirement,
   Workstation,
   AssetsDelivery,
+  Course,
 } = db;
 
 export const POST = withUser(async function ({ body }: any) {
@@ -22,7 +23,7 @@ export const POST = withUser(async function ({ body }: any) {
     include: [
       { model: User, as: "Manager", attributes: ["id", "fullName", "email"] },
       { model: Position, include: [{ model: Area }] },
-      { model: TrainingPlan },
+      { model: TrainingPlan, include: [{ model: Course }] },
       { model: TechnicalRequirement },
       { model: Workstation },
       { model: AssetsDelivery },
@@ -46,7 +47,11 @@ export const POST = withUser(async function ({ body }: any) {
       startDate: moment(result.startDate).format("DD/MM/YYYY"),
       manager: result.Manager?.fullName || null,
       status: result.status,
-      trainingPlans: result.TrainingPlans || [],
+      trainingPlans:
+        result.TrainingPlans.map((x: any) => ({
+          ...x,
+          courseName: x.Course.name,
+        })) || [],
       technicalRequirement: result.TechnicalRequirement || null,
       workstation: result.Workstation || null,
       assetsDeliveries: result.AssetsDeliveries || [],
