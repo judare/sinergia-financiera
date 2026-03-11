@@ -49,7 +49,8 @@ export const POST = withUser(async function ({ body }: any) {
       status: result.status,
       trainingPlans:
         result.TrainingPlans.map((x: any) => ({
-          ...x,
+          id: x.id,
+          description: x.description,
           courseName: x.Course.name,
         })) || [],
       technicalRequirement: result.TechnicalRequirement || null,
