@@ -123,15 +123,37 @@ export default function Home() {
             )}
           </Section>
         )}
-        {responsabilities.includes("assets_delivery") && (
-          <Section title="Entrega de activos">
-            {onboarding && (
+        {responsabilities.includes("assets_delivery") && onboarding && (
+          <>
+            <Section title="Licencias de software">
               <AssetsDelivery
                 onboardingId={onboarding.id}
+                assetType="software"
                 initialAssets={onboarding.assetsDeliveries}
               />
-            )}
-          </Section>
+            </Section>
+            <Section title="Uniformes">
+              <AssetsDelivery
+                onboardingId={onboarding.id}
+                assetType="uniform"
+                initialAssets={onboarding.assetsDeliveries}
+              />
+            </Section>
+            <Section title="Equipos y hardware">
+              <AssetsDelivery
+                onboardingId={onboarding.id}
+                assetType="equipment"
+                initialAssets={onboarding.assetsDeliveries}
+              />
+            </Section>
+            <Section title="Papelería y mobiliario">
+              <AssetsDelivery
+                onboardingId={onboarding.id}
+                assetType="stationery"
+                initialAssets={onboarding.assetsDeliveries}
+              />
+            </Section>
+          </>
         )}
 
         {responsabilities.includes("technicalRequirement") && (

@@ -17,6 +17,7 @@ export const POST = withUser(async function ({ body }: any) {
     trainingPlan,
     workstation,
     assetsDelivery,
+    assetType,
     technicalRequirement,
   } = body.data;
 
@@ -63,13 +64,19 @@ export const POST = withUser(async function ({ body }: any) {
   }
 
   if (assetsDelivery !== undefined) {
-    await AssetsDelivery.destroy({ where: { onboardingProcessId: id }, force: true });
+    const destroyWhere: any = { onboardingProcessId: id };
+    if (assetType) destroyWhere.assetType = assetType;
+    await AssetsDelivery.destroy({ where: destroyWhere, force: true });
     if (assetsDelivery.length > 0) {
       await AssetsDelivery.bulkCreate(
         assetsDelivery.map((ad: any) => ({
           onboardingProcessId: id,
+          assetType: assetType || ad.assetType || "equipment",
           itemName: ad.itemName,
           serialNumber: ad.serialNumber || null,
+          licenseKey: ad.licenseKey || null,
+          size: ad.size || null,
+          quantity: ad.quantity || null,
           isDelivered: ad.isDelivered ?? false,
         }))
       );

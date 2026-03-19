@@ -59,3 +59,12 @@ export const fetchWorkstations = async function () {
   let result = await postRequest("onboarding/workstations", {});
   return result.data.Workstations;
 };
+
+export const saveAssetsDelivery = async function (data: {
+  id: number;
+  assetType: string;
+  assetsDelivery: any[];
+}) {
+  let result = await postRequest("onboarding/update", data);
+  return result.data;
+};
