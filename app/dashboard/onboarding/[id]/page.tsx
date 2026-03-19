@@ -123,7 +123,6 @@ export default function Home() {
             )}
           </Section>
         )}
-
         {responsabilities.includes("assets_delivery") && (
           <Section title="Entrega de activos">
             {onboarding && (
