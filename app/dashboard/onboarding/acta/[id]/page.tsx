@@ -27,11 +27,52 @@ type Workstation = {
   status: string;
 };
 
+type AssetType = "software" | "uniform" | "equipment" | "stationery";
+
 type AssetsDelivery = {
   id: number;
+  assetType: AssetType;
   itemName: string;
   serialNumber: string | null;
+  licenseKey: string | null;
+  size: string | null;
+  quantity: number | null;
   isDelivered: boolean;
+};
+
+const ASSET_CONFIG: Record<AssetType, { label: string; columns: { key: keyof AssetsDelivery; header: string }[] }> = {
+  software: {
+    label: "Licencias de software",
+    columns: [
+      { key: "itemName", header: "Nombre" },
+      { key: "licenseKey", header: "Clave de licencia" },
+      { key: "isDelivered", header: "Entregado" },
+    ],
+  },
+  uniform: {
+    label: "Uniformes",
+    columns: [
+      { key: "itemName", header: "Nombre" },
+      { key: "size", header: "Talla" },
+      { key: "isDelivered", header: "Entregado" },
+    ],
+  },
+  equipment: {
+    label: "Equipos y hardware",
+    columns: [
+      { key: "itemName", header: "Nombre" },
+      { key: "serialNumber", header: "Serial" },
+      { key: "isDelivered", header: "Entregado" },
+    ],
+  },
+  stationery: {
+    label: "Papelería y mobiliario",
+    columns: [
+      { key: "itemName", header: "Nombre" },
+      { key: "quantity", header: "Cantidad" },
+      { key: "isDelivered", header: "Entregado" },
+    ],
+  },
 };
 
 type Acta = {
@@ -258,47 +299,71 @@ export default function ActaPage() {
                 {acta.assetsDeliveries.length === 0 ? (
                   <p className="text-sm text-neutral-400">Sin activos registrados.</p>
                 ) : (
-                  <table className="w-full text-sm border border-neutral-200 rounded-lg overflow-hidden">
-                    <thead>
-                      <tr className="bg-neutral-50 border-b border-neutral-200">
-                        <th className="text-left px-4 py-2 font-medium text-neutral-600">
-                          Ítem
-                        </th>
-                        <th className="text-left px-4 py-2 font-medium text-neutral-600">
-                          Serial
-                        </th>
-                        <th className="text-left px-4 py-2 font-medium text-neutral-600">
-                          Entregado
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {acta.assetsDeliveries.map((asset) => (
-                        <tr
-                          key={asset.id}
-                          className="border-b border-neutral-100 last:border-0"
-                        >
-                          <td className="px-4 py-2 font-medium text-neutral-900">
-                            {asset.itemName}
-                          </td>
-                          <td className="px-4 py-2 text-neutral-600">
-                            {asset.serialNumber || "—"}
-                          </td>
-                          <td className="px-4 py-2">
-                            <span
-                              className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${
-                                asset.isDelivered
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-neutral-100 text-neutral-500"
-                              }`}
-                            >
-                              {asset.isDelivered ? "Sí" : "No"}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="flex flex-col gap-6">
+                    {(Object.keys(ASSET_CONFIG) as AssetType[]).map((type) => {
+                      const group = acta.assetsDeliveries.filter(
+                        (a) => a.assetType === type
+                      );
+                      if (group.length === 0) return null;
+                      const config = ASSET_CONFIG[type];
+                      return (
+                        <div key={type}>
+                          <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wide mb-2">
+                            {config.label}
+                          </p>
+                          <table className="w-full text-sm border border-neutral-200 rounded-lg overflow-hidden">
+                            <thead>
+                              <tr className="bg-neutral-50 border-b border-neutral-200">
+                                {config.columns.map((col) => (
+                                  <th
+                                    key={col.key}
+                                    className="text-left px-4 py-2 font-medium text-neutral-600"
+                                  >
+                                    {col.header}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {group.map((asset) => (
+                                <tr
+                                  key={asset.id}
+                                  className="border-b border-neutral-100 last:border-0"
+                                >
+                                  {config.columns.map((col) => {
+                                    const val = asset[col.key];
+                                    if (col.key === "isDelivered") {
+                                      return (
+                                        <td key={col.key} className="px-4 py-2">
+                                          <span
+                                            className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${
+                                              val
+                                                ? "bg-green-100 text-green-700"
+                                                : "bg-neutral-100 text-neutral-500"
+                                            }`}
+                                          >
+                                            {val ? "Sí" : "No"}
+                                          </span>
+                                        </td>
+                                      );
+                                    }
+                                    return (
+                                      <td
+                                        key={col.key}
+                                        className="px-4 py-2 text-neutral-700"
+                                      >
+                                        {val != null && val !== "" ? String(val) : "—"}
+                                      </td>
+                                    );
+                                  })}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </section>
 
