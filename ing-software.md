@@ -10,13 +10,13 @@
 | **Empresa**        | WeCoding                                   |
 | **Líder Técnico**  | Juan David Restrepo Montoya                |
 | **Fecha**          | Abril 2026                                 |
-| **Estado**         | En desarrollo activo                       |
+| **Estado**         | **Finalizado — Aprobado por el cliente**   |
 
 ---
 
 ## 1. Descripción General del Sistema
 
-Sinergia es una plataforma web interna que centraliza y automatiza el proceso de incorporación (onboarding) de nuevos colaboradores. Reemplaza la coordinación manual entre áreas operativas por flujos digitales que garantizan que el empleado disponga de todos los activos, accesos y formación necesarios desde su primer día.
+Sinergia es una plataforma web interna, **desarrollada y entregada en su totalidad**, que centraliza y automatiza el proceso de incorporación (onboarding) de nuevos colaboradores. Reemplaza la coordinación manual entre áreas operativas por flujos digitales que garantizan que el empleado disponga de todos los activos, accesos y formación necesarios desde su primer día.
 
 El sistema articula cuatro áreas operativas (TI, Dotación, Servicios Generales y Formación), permite el seguimiento del estado de cada solicitud, genera un Acta de Entrega firmada digitalmente, y produce reportes de eficiencia por área.
 
@@ -287,7 +287,22 @@ sinergia/
 
 ---
 
-## 9. Metodología de Trabajo
+## 9. Cierre del Proyecto
+
+El sistema fue presentado formalmente al cliente **Sinergia Financiera** en abril de 2026. Durante la sesión de entrega, se validaron en vivo la totalidad de los módulos desarrollados:
+
+- Autenticación y control de acceso por roles
+- Creación y gestión de procesos de onboarding
+- Solicitudes automáticas por área (TI, Dotación, Servicios Generales, Formación)
+- Seguimiento de activos y generación del Acta de Entrega en PDF
+- Generación del Carnet de empleado
+- Panel de reportes y métricas de eficiencia
+
+**El cliente aprobó el 100% de las funcionalidades comprometidas** sin observaciones pendientes. El proyecto se da por concluido en su fase de desarrollo e implementación.
+
+---
+
+## 10. Metodología de Trabajo
 
 - **Marco ágil**: Scrum con sprints de dos semanas.
 - **Control de versiones**: Git + GitHub. Rama principal `main`.
@@ -298,7 +313,7 @@ sinergia/
 
 ---
 
-## 10. Integraciones Externas
+## 11. Integraciones Externas
 
 | Servicio          | Uso                                                             |
 | ----------------- | --------------------------------------------------------------- |
