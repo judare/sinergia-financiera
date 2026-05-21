@@ -40,7 +40,7 @@ export class GoogleAI {
   private async generate(
     model: string = "gemini-2.5-pro",
     systemInstruction: string,
-    responseSchema: any
+    responseSchema: any,
   ) {
     let response = await ai.models.generateContent({
       model,
@@ -62,7 +62,7 @@ export class GoogleAI {
     return GoogleAI.fixJson(text);
   }
 
-  async businessContext(contentWebsite: string) {
+  async coursesSuggestions(contentWebsite: string) {
     if (contentWebsite.trim().length < 5) {
       return {
         name: "",
@@ -82,10 +82,9 @@ ${contentWebsite}`;
         },
         context: {
           type: "string",
-          description:
-            "Breve resumen del la empresa, toda la información necesaria para que se entienda muy bien a que se dedica la empresa, solo informacion relevante del negocio no de la web",
+          description: "Sugerir cursos segun rol y posicion",
         },
-        suggestedAgents: {
+        suggestedCourses: {
           type: "array",
           items: {
             type: "string",
@@ -96,107 +95,13 @@ ${contentWebsite}`;
             "Agentes telefonicos sugeridos en base al contexto del negocio que puedan ser super útiles para la empresa",
         },
       },
-      required: ["name", "context", "suggestedAgents"],
+      required: ["name", "context", "suggestedCourses"],
     });
 
     return {
       name: json.name,
       context: json.context,
-      suggestedAgents: json.suggestedAgents || [],
+      suggestedCourses: json.suggestedCourses || [],
     } as const;
-  }
-
-  public async createAgent(
-    instructions: string,
-    business: any
-  ): Promise<{
-    label: string;
-    firstMessage: string;
-    systemPrompt: string;
-    purpose: string;
-  }> {
-    let promptIa = `
-# Nombre del negocio 
-${business.name}
-
-# Website del negocio
-${business.website}
-
-# Contexto del negocio
-${business.context}
-
-
-Debes incluir instrucciones para cada uno de estos aspectos
-Identidad del agente 
-Objetivos del agente:
-Objetivo principal
-Objetivo secundario
-Contexto de la empresa
-información de la empresa 
-Detalle del producto o servicio
-Escenarios comunes
-Preguntas Frecuentes
-Perfil y tono del agente 
-Lenguaje y tono 
-personalidad del agente
-palabras o frases que debe usar frecuente o debe omitir
-Normas de pronunciación 
-Pausas
-Manejo de puntuación
-como confirmar los números y correos
-Conversión de horas y anos 
-Instrucción relevantes 
-Cierre
-Casos comunes para finalizar la llamada
-Debe sonar super humano y amistoso
-Nunca puede relevar que es un aistente virtual bajo ninguna circunstancia
-
-El agente sera un agente de voz para atención telefónica
-Genera la instrucciones necesarias para que todo lo que un agende de voz de IA pueda pronunciar mal el LLM lo genere como texto, por ejemplo, numeros, correos, direcciones, etc
-
-# Variables
-
-Puedes usar las siguientes variables para construir el firstMessage o el systemPrompt
-- {{ current_time }} para la hora actual
-- {{ customer_id }} para el id del cliente a conectar
-- {{ customer_phone }} para el número de teléfono del cliente
-- {{ customer_name }} para el nombre del cliente
-- {{ short_name }} para el nombre corto del cliente
-- {{ customer_meta }} para toda la información del cliente adicional
-- {{ customer_email }} para el email del cliente
-- {{ customer_address }} para la dirección del cliente
-- {{ customer_website }} para el website del cliente
-- {{ customer_created_at }} para la fecha de creación del cliente
-
-
-# Instrucciones para el agente
-${instructions}
-    `;
-
-    return this.generate("gemini-2.5-pro", promptIa, {
-      type: "object",
-      properties: {
-        label: {
-          type: "string",
-          description: "Etiqueta del agente",
-        },
-        firstMessage: {
-          type: "string",
-          description:
-            "ejemplo: Hola, soy Jessica de Coca Cola, ¿Hablo con {{ short_name }}?",
-        },
-        systemPrompt: {
-          type: "string",
-          description:
-            "El contexto con el que el agente atenderá cada llamada de voz, super detallado, puede ser largo, cada instrucción debe estar incluida en formato markdown",
-        },
-        purpose: {
-          type: "string",
-          description:
-            "El propósito del agente, cual es el objetivo del agente para cada llamada",
-        },
-      },
-      required: ["label", "firstMessage", "systemPrompt", "purpose"],
-    });
   }
 }
